@@ -837,10 +837,10 @@ const CSV_FILES = {
 };
 
 function parseCSV(file){
-  return new Promise((res,rej)=>Papa.parse(file,{download:true,header:true,delimiter:';',skipEmptyLines:true,dynamicTyping:true,complete:r=>res(r.data),error:e=>rej(e)}));
+  return new Promise((res,rej)=>Papa.parse(file,{download:true,header:true,delimiter:',',skipEmptyLines:true,dynamicTyping:true,complete:r=>res(r.data),error:e=>rej(e)}));
 }
 function parseFile(f){
-  return new Promise((res,rej)=>Papa.parse(f,{header:true,delimiter:';',skipEmptyLines:true,dynamicTyping:true,complete:r=>res(r.data),error:e=>rej(e)}));
+  return new Promise((res,rej)=>Papa.parse(f,{header:true,delimiter:',',skipEmptyLines:true,dynamicTyping:true,complete:r=>res(r.data),error:e=>rej(e)}));
 }
 function img(r,pref){
   const v=String(r[pref+' V']||'').trim();const h=String(r[pref+' H']||'').trim();const s=String(r[pref+' Saga']||'').trim();

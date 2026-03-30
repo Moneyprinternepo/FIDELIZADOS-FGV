@@ -3,1535 +3,1368 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix 2025 — Lo más visto del mundo</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>Filmax Gran Via — Análisis de Fidelización</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --r:#E50914;
-  --bg:#ffffff;
-  --bg2:#f4f4f4;
-  --text:#111111;
-  --text2:#444444;
-  --text3:#888888;
-  --card:rgba(255,255,255,.9);
-  --card-border:rgba(0,0,0,.09);
-  --c:#00CFFF;
-  --g:#F5C518;
-  --gr:#22C55E;
-  --p:#A78BFA;
-  --sp:#FF6B35;
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: #2a2a3a;
+  --text: #e8e8f0;
+  --text-dim: #8888a0;
+  --accent: #ff6b35;
+  --accent2: #ffd166;
+  --plan-planet: #4ecdc4;
+  --plan-familia: #ff6b6b;
+  --plan-jove: #ffe66d;
+  --plan-gold: #f7b731;
+  --plan-nofid: #7f8c9b;
+  --positive: #2ecc71;
+  --negative: #e74c3c;
 }
-body.dark{
-  --bg:#0a0a0a;
-  --bg2:#111111;
-  --text:#f0f0f0;
-  --text2:#bbbbbb;
-  --text3:#777777;
-  --card:rgba(20,20,20,.9);
-  --card-border:rgba(255,255,255,.08);
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--r)}
-.bbs{font-family:'Bebas Neue',sans-serif;letter-spacing:.03em}
-.lbl{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--r);margin-bottom:.75rem}
-.lbl.c{color:var(--c)}.lbl.g{color:var(--g)}.lbl.gr{color:var(--gr)}.lbl.sp{color:var(--sp)}
-.sh{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.8rem,7vw,6.5rem);line-height:1}
-.bt{font-size:clamp(.95rem,1.35vw,1.08rem);color:var(--text2);line-height:1.85}.bt strong{color:var(--text);font-weight:700}
-.w{max-width:1400px;margin:0 auto;padding:6rem 2.5rem}.w.n{max-width:840px}.w.wide{max-width:1600px}
-.gl{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--card-border);border-radius:14px;box-shadow:0 2px 24px rgba(0,0,0,.07)}
-.ins{border-left:2px solid var(--r);padding:.85rem 1.3rem;background:rgba(229,9,20,.05);border-radius:0 8px 8px 0;margin-top:1.5rem}
-.ins.c{border-left-color:var(--c);background:rgba(0,207,255,.04)}.ins.g{border-left-color:var(--g);background:rgba(245,197,24,.05)}
-.ins.gr{border-left-color:var(--gr);background:rgba(34,197,94,.05)}.ins.sp{border-left-color:var(--sp);background:rgba(255,107,53,.05)}
-hr.dv{border:none;border-top:1px solid var(--card-border)}
 
-/* NAV */
-#nav{position:fixed;top:0;left:0;right:0;z-index:900;background:var(--card);backdrop-filter:blur(24px);border-bottom:1px solid var(--card-border);transition:background .4s}
-.ni{max-width:1400px;margin:0 auto;padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:56px}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.18em;color:var(--r)}.logo span{color:var(--text)}
-.tab{padding:.38rem 1.1rem;border-radius:999px;font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border:1px solid transparent;cursor:pointer;background:transparent;color:var(--text3);transition:all .2s}
-.tab.on{background:var(--r);color:#fff;border-color:var(--r)}.tab:not(.on):hover{color:var(--text);border-color:var(--text3)}
-#pb{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--r),#ff8c42);z-index:9999;transition:width .08s;box-shadow:0 0 10px rgba(229,9,20,.6)}
+.hero {
+  padding: 60px 40px 40px;
+  background: linear-gradient(135deg, #12121a 0%, #1a1028 50%, #12121a 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255,107,53,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 50%, rgba(78,205,196,0.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: 2.4em;
+  font-weight: 700;
+  letter-spacing: -1px;
+  position: relative;
+}
+.hero h1 span { color: var(--accent); }
+.hero p { color: var(--text-dim); margin-top: 8px; font-size: 1.05em; position: relative; }
 
-/* DARK MODE TOGGLE */
-.dark-toggle{width:40px;height:40px;border-radius:50%;border:1px solid var(--card-border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all .3s;margin-left:.5rem}
-.dark-toggle:hover{border-color:var(--r);transform:scale(1.1)}
+.container { max-width: 1400px; margin: 0 auto; padding: 30px 40px; }
 
-/* LOADING */
-#ls{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .8s,visibility .8s}
-#ls.gone{opacity:0;visibility:hidden;pointer-events:none}
-.spin{width:34px;height:34px;border:2px solid rgba(229,9,20,.12);border-top-color:var(--r);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 1.2rem}
-@keyframes sp{to{transform:rotate(360deg)}}
-#uu{display:none;flex-direction:column;align-items:center;gap:.75rem;margin-top:1.5rem}
-#uu.on{display:flex}
-.ub{background:var(--r);color:#fff;border:none;padding:.7rem 1.8rem;border-radius:999px;font-family:'DM Sans',sans-serif;font-weight:700;cursor:pointer;font-size:.85rem}
+.section {
+  margin-bottom: 50px;
+}
+.section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.3em;
+  color: var(--accent);
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+.section-subtitle {
+  color: var(--text-dim);
+  font-size: 0.92em;
+  margin-bottom: 24px;
+}
 
-/* PARTICLES */
-#bgc{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:0}
+.insight-box {
+  background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,107,53,0.02));
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0 24px;
+  font-size: 0.93em;
+  line-height: 1.7;
+}
+.insight-box strong { color: var(--accent); }
 
-/* VIEWS */
-.view{display:none}.view.on{display:block}
-/* AOS */
-.ao{opacity:0;transform:translateY(22px);transition:opacity .9s,transform .9s}
-.ao.l{transform:translateX(-22px)}.ao.r{transform:translateX(22px)}.ao.vis{opacity:1;transform:none}
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.kpi {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.kpi-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.9em;
+  font-weight: 700;
+  color: var(--accent);
+}
+.kpi-value.gold { color: var(--plan-gold); }
+.kpi-value.teal { color: var(--plan-planet); }
+.kpi-value.red { color: var(--negative); }
+.kpi-value.green { color: var(--positive); }
+.kpi-label {
+  color: var(--text-dim);
+  font-size: 0.82em;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-/* ── HERO ── */
-#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 2rem;position:relative;overflow:hidden;text-align:center}
-.hero-decoration{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border:1px solid rgba(229,9,20,.1);border-radius:50%;pointer-events:none;animation:pulse 8s ease-in-out infinite}
-.hero-decoration:nth-child(2){width:500px;height:500px;border-color:rgba(229,9,20,.07);animation-delay:-2s}
-.hero-decoration:nth-child(3){width:300px;height:300px;border-color:rgba(229,9,20,.05);animation-delay:-4s}
-@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.05);opacity:.7}}
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.chart-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+.chart-box.full { grid-column: 1 / -1; }
+.chart-box h3 {
+  font-size: 0.95em;
+  margin-bottom: 16px;
+  color: var(--text);
+  font-weight: 600;
+}
+.chart-container { position: relative; height: 320px; }
+.chart-container.tall { height: 400px; }
 
-/* Netflix N Logo */
-.netflix-n{display:block;margin:0 auto 2.5rem;filter:drop-shadow(0 0 60px rgba(229,9,20,.55))}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88em;
+}
+table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.78em;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border);
+}
+table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+table tr:hover td { background: rgba(255,255,255,0.02); }
+.num { text-align: right; font-family: 'Space Mono', monospace; font-size: 0.9em; }
+.highlight { color: var(--accent); font-weight: 600; }
+.positive { color: var(--positive); }
+.negative { color: var(--negative); }
 
-.hc{position:relative;z-index:2;max-width:900px;margin:0 auto}
-.scu{position:absolute;bottom:2.25rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.35rem;color:var(--text3);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;animation:bob 2s ease-in-out infinite;z-index:2}
-@keyframes bob{0%,100%{transform:translateX(-50%)}50%{transform:translateX(-50%) translateY(4px)}}
-.chv{width:12px;height:12px;border-right:1.5px solid var(--text3);border-bottom:1.5px solid var(--text3);transform:rotate(45deg)}
+.plan-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82em;
+  font-weight: 600;
+}
+.plan-badge.planet { background: rgba(78,205,196,0.15); color: var(--plan-planet); }
+.plan-badge.familia { background: rgba(255,107,107,0.15); color: var(--plan-familia); }
+.plan-badge.jove { background: rgba(255,230,109,0.15); color: var(--plan-jove); }
+.plan-badge.gold { background: rgba(247,183,49,0.15); color: var(--plan-gold); }
+.plan-badge.nofid { background: rgba(127,140,155,0.15); color: var(--plan-nofid); }
 
-/* ── COUNTERS ── */
-.cg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem}
-.cc{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:1.6rem 1.25rem;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:background .4s,border-color .4s}
-.cn{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;margin-bottom:.25rem}
-.cl{font-size:.72rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase}
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+}
 
-/* ── TOP SERIES BAR CHART ── */
-.topviz{display:grid;grid-template-columns:1fr 420px;gap:0;min-height:520px;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--card-border);box-shadow:0 4px 24px rgba(0,0,0,.08);transition:background .4s,border-color .4s}
-.topviz-bars{padding:1.8rem 1.6rem;display:flex;flex-direction:column;justify-content:center;gap:.38rem}
-.topviz-hero{position:relative;overflow:hidden;background:#0d0d0d;flex-shrink:0}
-.topviz-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:opacity .55s ease;filter:brightness(.95)}
-.topviz-hero-grad{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.30) 0%,rgba(10,10,10,.0) 100%)}
-.topviz-hero-info{position:absolute;bottom:1.8rem;left:1.6rem;right:1.6rem;z-index:2}
-.topviz-hero-info .thi-rk{font-family:'Bebas Neue',sans-serif;font-size:.75rem;color:#666;letter-spacing:.18em;margin-bottom:.3rem}
-.topviz-hero-info .thi-tt{font-family:'Bebas Neue',sans-serif;font-size:2.1rem;color:#fff;line-height:1;margin-bottom:.3rem}
-.topviz-hero-info .thi-vw{font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1}
-.topviz-hero-info .thi-sub{font-size:.72rem;color:#666;margin-top:.3rem}
-.tbar-row{display:flex;align-items:center;gap:.9rem;padding:.38rem .4rem;border-radius:7px;cursor:pointer;transition:background .18s}
-.tbar-row:hover{background:rgba(128,128,128,.1)}
-.tbar-row.active{background:rgba(229,9,20,.08);border-left:2px solid var(--r)}
-.tbar-rk{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--text3);min-width:1.6rem;text-align:center;transition:color .2s}
-.tbar-row.active .tbar-rk,.tbar-row:hover .tbar-rk{color:var(--r)}
-.tbar-info{flex:1;min-width:0}
-.tbar-title{font-size:.82rem;font-weight:600;color:var(--text2);margin-bottom:.22rem;transition:color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tbar-row.active .tbar-title,.tbar-row:hover .tbar-title{color:var(--text)}
-.tbar-bw{height:8px;background:rgba(128,128,128,.15);border-radius:999px;overflow:hidden}
-.tbar-b{height:100%;border-radius:999px;transition:width 1.2s cubic-bezier(.16,1,.3,1)}
-.tbar-val{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;line-height:1;min-width:4rem;text-align:right;transition:font-size .2s}
-.tbar-row.active .tbar-val,.tbar-row:hover .tbar-val{font-size:1.3rem}
-.tbar-sub{font-size:.56rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;text-align:right}
-@media(max-width:860px){.topviz{grid-template-columns:1fr}.topviz-hero{height:220px}}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
 
-/* ── TOP MOVIES (espejo - hero izquierda) ── */
-.topviz-movies{display:grid;grid-template-columns:420px 1fr;gap:0;min-height:520px;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--card-border);box-shadow:0 4px 24px rgba(0,0,0,.08);transition:background .4s,border-color .4s}
-.topviz-movies .topviz-hero-grad{background:linear-gradient(270deg,rgba(10,10,10,.30) 0%,rgba(10,10,10,.0) 100%)}
-.topviz-movies .topviz-hero-info{left:auto;right:1.6rem;text-align:right}
-@media(max-width:860px){.topviz-movies{grid-template-columns:1fr}.topviz-movies .topviz-hero{height:220px;order:-1}}
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.callout h4 { font-size: 0.9em; margin-bottom: 8px; }
 
-/* ── KPOP CALLOUT ── */
-#kpop{position:relative;overflow:hidden;min-height:50vh;display:flex;align-items:center;justify-content:center;text-align:center;background:#0a0a0a}
-#kbg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.15) saturate(1.4);transition:filter .5s}
-#kpop:hover #kbg{filter:brightness(.22) saturate(1.4)}
-.kc{position:relative;z-index:2;padding:4rem 2rem}
+.bar-inline {
+  height: 8px;
+  background: var(--surface2);
+  border-radius: 4px;
+  margin: 6px 0;
+  overflow: hidden;
+}
+.bar-inline .fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
 
-/* ── TREEMAP SAGAS ── */
-.treemap-section{margin-bottom:3rem}
-.treemap-title{font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.2rem;font-weight:700}
-.treemap-container{width:100%;background:var(--card);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;transition:background .4s,border-color .4s}
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 40px;
+}
+.toc h3 { margin-bottom: 12px; font-size: 1em; color: var(--accent); }
+.toc ol { padding-left: 20px; }
+.toc li { margin: 6px 0; }
+.toc a { color: var(--text); text-decoration: none; font-size: 0.92em; }
+.toc a:hover { color: var(--accent); }
 
-/* ── SPAIN ── */
-.sp-podium{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:.6rem;align-items:end;height:360px}
-.sp-pod-item{display:flex;flex-direction:column;height:100%}
-.sp-pod-card{border-radius:10px;overflow:hidden;background:#111;cursor:pointer;flex:1;position:relative;min-height:80px}
-.sp-pod-card .sp-pod-bg{position:absolute;inset:0;background-size:cover;background-position:center top;filter:brightness(.55);transition:transform .45s,filter .35s}
-.sp-pod-card:hover .sp-pod-bg{transform:scale(1.04);filter:brightness(.75)}
-.sp-pod-card .sp-pod-ov{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:.75rem .65rem}
-.sp-pod-medal{font-size:1.6rem;text-align:center;padding:.4rem 0;flex-shrink:0}
-.sp-pod-step{height:30px;background:rgba(128,128,128,.1);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;border-radius:0 0 8px 8px;flex-shrink:0}
-.sp-pod-item.gold .sp-pod-card{height:100%}
-.sp-pod-item.silver .sp-pod-card{height:80%}
-.sp-pod-item.bronze .sp-pod-card{height:65%}
-
-/* Casa de Papel chart wrapper */
-.casadepapel-wrap{background:rgba(229,9,20,.04);border:1px solid rgba(229,9,20,.1);border-radius:12px;padding:1.2rem 1.4rem;margin-top:1.2rem}
-.cdp-chart-wrap{position:relative;height:140px;margin-top:.75rem}
-
-/* Spain series bars */
-.sp-sbars{display:flex;flex-direction:column;gap:.42rem}
-.sp-sbar-row{display:flex;align-items:center;gap:.75rem;padding:.65rem .8rem;border-radius:8px;background:var(--card);border:1px solid rgba(255,107,53,.15);transition:all .2s;cursor:default;position:relative;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.sp-sbar-row:hover{background:var(--card);border-color:rgba(255,107,53,.35);transform:translateX(3px)}
-.sp-sbar-info{flex:1;min-width:0}
-.sp-sbar-title{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.22rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sp-sbar-bw{height:3px;background:rgba(255,107,53,.12);border-radius:999px;overflow:hidden}
-.sp-sbar-b{height:100%;background:var(--sp);border-radius:999px;transition:width 1.2s cubic-bezier(.16,1,.3,1)}
-.sp-sbar-val{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:var(--sp);line-height:1;flex-shrink:0;min-width:3.5rem;text-align:right}
-
-/* ── GENRES - TARJETAS NEGRAS ── */
-.gbars{display:flex;flex-direction:column;gap:.55rem}
-.gbi{display:flex;align-items:center;gap:.85rem;padding:.85rem 1rem;border-radius:10px;background:#111111;border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden;transition:all .25s;cursor:default}
-.gbi:hover{background:#1a1a1a;border-color:rgba(255,255,255,.15);transform:translateX(3px)}
-.gbi-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .45s;filter:blur(4px) brightness(.15) saturate(1.4)}
-.gbi:hover .gbi-bg{opacity:1}
-.gbi-thumb{width:40px;height:60px;border-radius:6px;object-fit:cover;flex-shrink:0;position:relative;z-index:2;border:1px solid rgba(255,255,255,.12)}
-.gbi-nothumb{width:40px;height:60px;border-radius:6px;flex-shrink:0;background:rgba(255,255,255,.08);position:relative;z-index:2}
-.gbi-info{flex:1;min-width:0;position:relative;z-index:2}
-.gbi-name{font-size:.85rem;font-weight:600;color:#ffffff;margin-bottom:.35rem;line-height:1}
-.gbi-bw{height:4px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden}
-.gbi-b{height:100%;border-radius:999px;transition:width 1.15s cubic-bezier(.16,1,.3,1);width:0}
-.gbi-right{position:relative;z-index:2;text-align:right;flex-shrink:0}
-.gbi-count{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1;color:#ffffff}
-.gbi-lbl{font-size:.57rem;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase}
-
-/* ── WAFFLE ── */
-.wfl{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}
-.wc{aspect-ratio:1;border-radius:2px;cursor:pointer;transition:transform .14s}.wc:hover{transform:scale(1.4);z-index:5;position:relative}
-.wc.a{background:var(--r)}.wc.na{background:rgba(128,128,128,.2)}
-.wt{background:var(--card)!important;border:1px solid var(--card-border)!important;border-radius:12px!important;min-height:220px!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-shadow:0 4px 20px rgba(0,0,0,.1)!important;transition:background .4s,border-color .4s}
-
-/* ── SEASONS ── */
-.sbtn{padding:.3rem .82rem;border-radius:999px;font-size:.7rem;font-weight:600;border:1px solid var(--card-border);background:var(--card);color:var(--text3);cursor:pointer;transition:all .17s;white-space:nowrap}
-.sbtn.on{color:#fff;border-color:currentColor}
-.sbtns{display:flex;flex-wrap:wrap;gap:.38rem;margin-bottom:1.2rem}
-
-/* ── SEARCH ── */
-.si{width:100%;background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:.85rem 1.3rem .85rem 2.9rem;font-size:.92rem;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:all .3s}
-.si:focus{border-color:var(--r)}.si::placeholder{color:var(--text3)}
-.sw{position:relative}.sic{position:absolute;left:.95rem;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
-.rt{width:100%;border-collapse:collapse}
-.rt th{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);padding:.65rem .9rem;text-align:left;border-bottom:1px solid var(--card-border);position:sticky;top:0;background:var(--bg2)}
-.rt td{padding:.68rem .9rem;border-bottom:1px solid var(--card-border);font-size:.85rem;color:var(--text)}
-.rt tr:hover td{background:rgba(128,128,128,.05)}
-.bm{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.16rem .52rem;border-radius:999px}
-.bmp{background:rgba(229,9,20,.1);color:var(--r);border:1px solid rgba(229,9,20,.2)}
-.bms{background:rgba(0,207,255,.1);color:#0099cc;border:1px solid rgba(0,207,255,.25)}
-
-/* ── PODIO ── */
-.pod{display:flex;align-items:center;gap:.85rem;padding:0;border-radius:16px;margin-bottom:1.2rem;position:relative;overflow:hidden;border:1px solid var(--card-border);transition:all .3s;min-height:200px;box-shadow:0 4px 20px rgba(0,0,0,.1)}
-.pod:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.15)}
-.podb{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(.35);z-index:0;transition:filter .3s}.pod:hover .podb{filter:brightness(.45)}
-.podc{position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem;width:100%;padding:1.8rem 2rem}
-.prk2{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;min-width:2.5rem;text-align:center}
-.pbar{height:4px;border-radius:999px;margin-top:.5rem}
-
-/* ── DASHBOARD ── */
-.dbw{max-width:1520px;margin:0 auto;padding:1.25rem 1.5rem 2.5rem}
-.dbg{display:grid;grid-template-columns:repeat(12,1fr);gap:.9rem;margin-top:.9rem}
-.dbc{background:var(--card);border:1px solid var(--card-border);border-radius:13px;padding:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,.05);transition:background .4s,border-color .4s}
-.dbt{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-bottom:.85rem;font-weight:700}
-.ds{font-family:'Bebas Neue',sans-serif;font-size:2.3rem;line-height:1}.dsub{font-size:.7rem;color:var(--text3);margin-top:.2rem}
-.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c12{grid-column:span 12}
-@media(max-width:1100px){.c3{grid-column:span 6}.c4{grid-column:span 6}}
-@media(max-width:700px){.dbg{grid-template-columns:1fr}.c3,.c4,.c5,.c6,.c7,.c12{grid-column:span 1}}
-.fp{padding:.27rem .72rem;border-radius:999px;font-size:.67rem;font-weight:600;border:1px solid var(--card-border);background:transparent;color:var(--text3);cursor:pointer;transition:all .13s}
-.fp.on{background:rgba(229,9,20,.1);border-color:var(--r);color:var(--r)}
-.fr{display:flex;flex-wrap:wrap;gap:.32rem;margin-bottom:.45rem}
-.dli{display:flex;align-items:center;gap:.6rem;padding:.42rem 0;border-bottom:1px solid var(--card-border)}.dli:last-child{border-bottom:none}
-.dlr{font-family:'Bebas Neue',sans-serif;font-size:.82rem;color:var(--text3);min-width:1.2rem;text-align:center}
-.dlbw{flex:1;min-width:0}.dlt{font-size:.73rem;font-weight:500;color:var(--text2);margin-bottom:.17rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dlb{height:3px;border-radius:999px}.dlv{font-size:.7rem;font-weight:700;text-align:right;white-space:nowrap;min-width:3rem}
-.dbpg{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:.42rem}
-.dbp{position:relative;border-radius:8px;overflow:hidden;background:#111;cursor:pointer;aspect-ratio:.67}
-.dbpb{position:absolute;inset:0;background-size:cover;background-position:center top;filter:brightness(.45);transition:transform .35s,filter .35s}.dbp:hover .dbpb{transform:scale(1.07);filter:brightness(.7)}
-.dbpc{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.9) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:.6rem .55rem}
-.dbpn{font-size:.7rem;font-weight:600;color:#e8e8e8;line-height:1.2;margin-bottom:.12rem}.dbpv{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;line-height:1}
-
-/* ── SECTION SIDEBAR NAV ── */
-#snav{position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);z-index:800;display:flex;flex-direction:column;gap:.4rem;opacity:0;pointer-events:none;transition:opacity .5s}
-#snav.vis{opacity:1;pointer-events:auto}
-.snd{display:flex;align-items:center;gap:.5rem;justify-content:flex-end;cursor:pointer;padding:.3rem 0}
-.snd-lbl{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);opacity:0;transform:translateX(10px);transition:all .25s;white-space:nowrap}
-.snd:hover .snd-lbl,.snd.on .snd-lbl{opacity:1;transform:translateX(0);color:var(--text2)}
-.snd-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);transition:all .2s;flex-shrink:0}
-.snd:hover .snd-dot{background:var(--r);transform:scale(1.3)}
-.snd.on .snd-dot{background:var(--r);transform:scale(1.5)}
-#nav-crumb{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);opacity:0;transition:opacity .3s;padding-left:.6rem;border-left:1px solid var(--card-border)}
-#nav-crumb.vis{opacity:1}
-@media(max-width:900px){#snav{display:none}}
-
-/* ── COUNTRY RANK ── */
-.crank{display:flex;flex-direction:column;gap:.55rem}
-.cri{display:flex;align-items:center;gap:.85rem;padding:.75rem 1rem;border-radius:10px;background:var(--card);border:1px solid var(--card-border);transition:all .2s}
-.cri:hover{transform:translateX(4px)}
-.cri.top1{background:rgba(229,9,20,.05);border-color:rgba(229,9,20,.15)}
-.cri-rk{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--text3);min-width:1.8rem;text-align:center}
-.cri.top1 .cri-rk{color:var(--r)}
-.cri-flag{font-size:1.6rem;flex-shrink:0}
-.cri-info{flex:1;min-width:0}
-.cri-name{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.3rem}
-.cri-bw{height:5px;background:rgba(128,128,128,.15);border-radius:999px;overflow:hidden}
-.cri-b{height:100%;border-radius:999px;transition:width 1.2s cubic-bezier(.16,1,.3,1);width:0}
-.cri-nums{text-align:right;flex-shrink:0;min-width:4rem}
-.cri-count{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;line-height:1}
-.cri-sub{font-size:.55rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
-.crank-note{font-size:.68rem;color:var(--text3);margin-top:.75rem;text-align:right}
-
-/* ── KIDS ── */
-.kids-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.7rem}
-.kids-card{position:relative;border-radius:10px;overflow:hidden;background:var(--card);border:1px solid var(--card-border);padding:.9rem .85rem;transition:transform .2s,box-shadow .2s;cursor:default}
-.kids-card:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.1)}
-.kids-card-name{font-size:.72rem;font-weight:700;color:var(--text);margin-bottom:.5rem;letter-spacing:.01em}
-.kids-card-bar-wrap{height:6px;background:rgba(128,128,128,.15);border-radius:999px;overflow:hidden;margin-bottom:.4rem}
-.kids-card-bar{height:100%;border-radius:999px;transition:width 1.2s cubic-bezier(.16,1,.3,1)}
-.kids-card-val{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;line-height:1}
-.kids-card-sub{font-size:.55rem;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
-
-/* ── AUTHOR BADGE ── */
-#author-badge{position:fixed;bottom:1.4rem;left:1.4rem;z-index:850;display:flex;align-items:center;gap:.7rem;background:var(--card);border:1px solid var(--card-border);border-radius:999px;padding:.38rem .9rem .38rem .38rem;backdrop-filter:blur(18px);box-shadow:0 2px 18px rgba(0,0,0,.15);text-decoration:none;transition:all .25s;max-width:220px}
-#author-badge:hover{border-color:var(--r);box-shadow:0 4px 24px rgba(229,9,20,.18);transform:translateY(-2px)}
-.ab-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--r);flex-shrink:0;display:block}
-.ab-text{display:flex;flex-direction:column;min-width:0}
-.ab-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);line-height:1}
-.ab-name{font-size:.72rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+@media (max-width: 900px) {
+  .chart-grid, .two-col { grid-template-columns: 1fr; }
+  .hero { padding: 30px 20px; }
+  .container { padding: 20px; }
+  .hero h1 { font-size: 1.6em; }
+}
 </style>
 </head>
 <body>
-<canvas id="bgc"></canvas>
-<div id="pb"></div>
 
-<!-- AUTHOR BADGE -->
-<a id="author-badge" href="https://es.linkedin.com/in/pedro-garcia-mauri%C3%B1o-848aa2270" target="_blank" rel="noopener" title="Informe elaborado por Pedro García-Mauriño">
-  <img class="ab-avatar" src="https://i.ibb.co/4n93j7rF/Gemini-Generated-Image-ryq0oyryq0oyryq0.png" alt="Pedro García-Mauriño" onerror="this.style.display='none'">
-  <div class="ab-text">
-    <span class="ab-label">BY:</span>
-    <span class="ab-name">Pedro García-Mauriño</span>
+<div class="hero">
+  <h1>Filmax Gran Via — <span>Programa de Fidelización</span></h1>
+  <p>Análisis integral de clientes fidelizados · Datos 2023–Q1 2026 · 300.000+ transacciones</p>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h3>Índice del informe</h3>
+  <ol>
+    <li><a href="#s1">Radiografía general: fidelizados vs no fidelizados</a></li>
+    <li><a href="#s2">Evolución anual y peso del programa</a></li>
+    <li><a href="#s3">Los planes al detalle: PLANET, FAMILIA, PLANETJOVE, PLANGOLD</a></li>
+    <li><a href="#s4">Frecuencia de visita y comportamiento recurrente</a></li>
+    <li><a href="#s5">Retención, fuga y captación</a></li>
+    <li><a href="#s6">Valor del cliente (CLV proxy)</a></li>
+    <li><a href="#s7">Formatos premium y recargos</a></li>
+    <li><a href="#s8">Anticipación de compra y hábitos</a></li>
+    <li><a href="#s9">Q1 2026 vs histórico</a></li>
+    <li><a href="#s10">De no fidelizado a fidelizado: ¿vale la pena?</a></li>
+    <li><a href="#s11">El mapa de películas: ¿cuáles son "de fidelizados" y cuáles convierten?</a></li>
+    <li><a href="#s12">Conclusiones y recomendaciones</a></li>
+  </ol>
+</div>
+
+<!-- ============ SECTION 1 ============ -->
+<div class="section" id="s1">
+  <div class="section-title">01 — Radiografía general</div>
+  <div class="section-subtitle">Fidelizados vs No Fidelizados: las diferencias que importan</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-value">300K+</div>
+      <div class="kpi-label">Transacciones analizadas</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value teal">~27%</div>
+      <div class="kpi-label">Clientes son fidelizados</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value gold">~39%</div>
+      <div class="kpi-label">Tickets de fidelizados</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">€50.6</div>
+      <div class="kpi-label">Revenue/cliente fidelizado</div>
+    </div>
   </div>
-</a>
 
-<!-- SECTION SIDEBAR NAV -->
-<nav id="snav">
-  <div class="snd" data-sec="hero" onclick="scrollToSec('hero')"><div class="snd-lbl">Portada</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec01" onclick="scrollToSec('sec01')"><div class="snd-lbl">01 La escala</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec02" onclick="scrollToSec('sec02')"><div class="snd-lbl">02 Top Series</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec03" onclick="scrollToSec('sec03')"><div class="snd-lbl">03 Top Películas</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec04" onclick="scrollToSec('sec04')"><div class="snd-lbl">04 Franquicias</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec09" onclick="scrollToSec('sec09')"><div class="snd-lbl">05 España</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec06" onclick="scrollToSec('sec06')"><div class="snd-lbl">06 Géneros</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec07" onclick="scrollToSec('sec07')"><div class="snd-lbl">07 Animación</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec08" onclick="scrollToSec('sec08')"><div class="snd-lbl">08 Temporadas</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec05" onclick="scrollToSec('sec05')"><div class="snd-lbl">09 El mapa</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec10" onclick="scrollToSec('sec10')"><div class="snd-lbl">10 Kids</div><div class="snd-dot"></div></div>
-  <div class="snd" data-sec="sec11" onclick="scrollToSec('sec11')"><div class="snd-lbl">11 Podio</div><div class="snd-dot"></div></div>
-</nav>
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>% de clientes fidelizados vs no fidelizados por año</h3>
+      <div class="chart-container"><canvas id="chartClientPct"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>% de tickets vendidos por grupo</h3>
+      <div class="chart-container"><canvas id="chartTicketPct"></canvas></div>
+    </div>
+  </div>
 
-<!-- LOADING -->
-<div id="ls">
-  <div style="text-align:center">
-    <div class="spin"></div>
-    <p class="bbs" style="font-size:1.3rem;letter-spacing:.3em;color:var(--text)" id="lt">Cargando datos…</p>
-    <div id="uu">
-      <p style="color:var(--text2);font-size:.8rem;max-width:300px;line-height:1.6">Pon los 4 CSV en la misma carpeta que este archivo, o selecciónalos aquí:</p>
-      <label class="ub" for="cfi">Seleccionar 4 CSVs</label>
-      <input type="file" id="cfi" multiple accept=".csv" style="display:none">
-      <p id="um" style="font-size:.75rem;color:var(--r)"></p>
+  <div class="insight-box">
+    <strong>Hallazgo clave:</strong> Aunque solo representan ~27% de los clientes, los fidelizados generan ~40% de los tickets. Esto se debe a que un fidelizado compra en media <strong>2× más entradas por año</strong> que un no fidelizado (~6.1 tickets vs ~3.4). Además, pagan <strong>un precio medio por ticket más bajo</strong> (€7.9–8.4 vs €9.5–10.4), lo que sugiere que el programa ofrece descuentos efectivos a cambio de mayor frecuencia y lealtad.
+  </div>
+
+  <div class="chart-box full" style="margin-bottom:24px">
+    <h3>Comparativa clave: fidelizado vs no fidelizado (media 2023-2025)</h3>
+    <table>
+      <thead>
+        <tr><th></th><th class="num">Fidelizado</th><th class="num">No Fidelizado</th><th class="num">Diferencia</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Tickets/cliente/año</td><td class="num highlight">6.1</td><td class="num">3.4</td><td class="num positive">+79%</td></tr>
+        <tr><td>Visitas únicas/año</td><td class="num highlight">2.4</td><td class="num">1.3</td><td class="num positive">+85%</td></tr>
+        <tr><td>Revenue/cliente/año</td><td class="num highlight">€50.4</td><td class="num">€33.5</td><td class="num positive">+50%</td></tr>
+        <tr><td>Precio medio/ticket</td><td class="num">€8.04</td><td class="num highlight">€9.89</td><td class="num negative">−19%</td></tr>
+        <tr><td>% compra mismo día</td><td class="num highlight">76.4%</td><td class="num">54.6%</td><td class="num">+22pp</td></tr>
+        <tr><td>% con recargo en ticket</td><td class="num">~20%</td><td class="num highlight">~42%</td><td class="num positive">−22pp</td></tr>
+        <tr><td>% 5+ visitas/año</td><td class="num highlight">11.7%</td><td class="num">1.3%</td><td class="num positive">+9× más</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ============ SECTION 2 ============ -->
+<div class="section" id="s2">
+  <div class="section-title">02 — Evolución anual</div>
+  <div class="section-subtitle">¿Gana o pierde peso el programa de fidelización?</div>
+
+  <div class="chart-grid">
+    <div class="chart-box full">
+      <h3>Evolución: % tickets fidelizados por mes (2023–2025)</h3>
+      <div class="chart-container tall"><canvas id="chartMonthlyPct"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Tendencia preocupante:</strong> El peso de los fidelizados sobre el total de tickets ha <strong>bajado progresivamente</strong>: de ~43% en 2023 a ~41% en 2024 y <strong>~36% en 2025</strong>. Los meses de verano (julio-agosto) y diciembre son los peores para la penetración fidelizada, coincidiendo con público más ocasional atraído por blockbusters y formatos 4DX. En 2025 se registran meses por debajo del 32%.
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Clientes fidelizados activos por año</h3>
+      <div class="chart-container"><canvas id="chartFidClients"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Revenue total: Fidelizados vs No Fidelizados</h3>
+      <div class="chart-container"><canvas id="chartRevenue"></canvas></div>
     </div>
   </div>
 </div>
 
-<nav id="nav">
-  <div class="ni">
-    <div style="display:flex;align-items:center;gap:1.1rem"><div class="logo">NETFLIX<span> 2025</span></div><div id="nav-crumb"></div></div>
-    <div style="display:flex;gap:.42rem;align-items:center">
-      <button class="tab on" onclick="swT('i',this)">Informe</button>
-      <button class="tab" onclick="swT('d',this)">Dashboard</button>
-      <button class="dark-toggle" onclick="toggleDark()" title="Modo claro">☀️</button>
+<!-- ============ SECTION 3 ============ -->
+<div class="section" id="s3">
+  <div class="section-title">03 — Los planes al detalle</div>
+  <div class="section-subtitle">PLANET · FAMILIA · PLANETJOVE · PLANGOLD — perfil y rendimiento</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Distribución de clientes por plan (2025)</h3>
+      <div class="chart-container"><canvas id="chartPlanDist"></canvas></div>
     </div>
-  </div>
-</nav>
-
-<!-- ══════ INFORME ══════ -->
-<div id="vi" class="view on" style="padding-top:56px;position:relative;z-index:1">
-
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-decoration"></div>
-    <div class="hero-decoration"></div>
-    <div class="hero-decoration"></div>
-    <div class="hc ao">
-      <!-- Netflix N Logo -->
-      <svg class="netflix-n" width="90" height="140" viewBox="0 0 90 140" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="ng" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#E50914"/>
-            <stop offset="100%" stop-color="#a3000d"/>
-          </linearGradient>
-        </defs>
-        <text x="45" y="128" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="148" fill="url(#ng)" letter-spacing="-2">N</text>
-      </svg>
-      <div class="lbl ao" style="font-size:.65rem;margin-bottom:1.5rem">Reporte interactivo · Datos oficiales Netflix 2025</div>
-      <h1 class="bbs ao" style="font-size:clamp(4.5rem,17vw,15rem);line-height:.9;margin-bottom:1rem">
-        <span style="color:var(--r);text-shadow:0 0 100px rgba(229,9,20,.35)">LO QUE EL</span><br><span>MUNDO VIO</span>
-      </h1>
-      <p class="bbs ao" style="font-size:clamp(1.1rem,2.5vw,2rem);color:var(--text2);letter-spacing:.14em;margin-bottom:1.25rem">Lo más visto de Netflix</p>
-      <p style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(.95rem,1.7vw,1.35rem);color:var(--text2);line-height:1.55" class="ao">"19.000 títulos, 48.000 millones de visualizaciones.<br>Una historia que nunca te habían contado así."</p>
-    </div>
-    <div class="scu"><span></span><div class="chv"></div></div>
-  </section>
-
-  <hr class="dv">
-
-  <section id="sec01"><div class="w">
-    <div class="lbl ao">01 — La escala</div>
-    <h2 class="sh ao" style="margin-bottom:2.75rem">Un catálogo<br>difícil de creer</h2>
-    <div class="cg">
-      <div class="cc ao"><div class="cn" style="color:var(--r)" id="c-pm">—</div><div class="cl">Películas</div></div>
-      <div class="cc ao"><div class="cn" style="color:var(--c)" id="c-sm">—</div><div class="cl">Series</div></div>
-      <div class="cc ao"><div class="cn" style="color:var(--g)" id="c-pv">—</div><div class="cl">Miles de millones · Views películas</div></div>
-      <div class="cc ao"><div class="cn" style="color:var(--p)" id="c-sv">—</div><div class="cl">Miles de millones · Views series</div></div>
-    </div>
-  </div></section>
-
-  <hr class="dv">
-
-  <section id="sec02"><div class="w" style="padding-bottom:3rem">
-    <div style="display:grid;grid-template-columns:1fr auto;align-items:end;gap:1.5rem;margin-bottom:1.75rem">
-      <div class="ao l"><div class="lbl c">02 — Top series · Visualizaciones 2025</div><h2 class="sh">Las series que<br>dominaron el año</h2></div>
-      <div class="ao r" style="max-width:380px"><p class="bt" style="font-size:.88rem">¡Adolescence nos sorprendió a todos! Desde thrillers coreanos hasta dramas británicos. Este es el top 10 de series más vistas en Netflix durante 2025.</p></div>
-    </div>
-    <div class="topviz ao" id="s-topviz">
-      <div class="topviz-bars" id="s-topviz-bars"></div>
-      <div class="topviz-hero" id="s-topviz-hero">
-        <div class="topviz-hero-bg" id="s-hero-bg"></div>
-        <div class="topviz-hero-grad"></div>
-        <div class="topviz-hero-info" id="s-hero-info">
-          <div class="thi-rk">Selecciona o pasa el cursor</div>
-          <div class="thi-tt">— Top Series 2025 —</div>
-          <div class="thi-vw" style="color:var(--c)"></div>
-        </div>
-      </div>
-    </div>
-  </div></section>
-
-  <hr class="dv">
-
-  <!-- TOP PELÍCULAS - Estructura espejo -->
-  <section id="sec03"><div class="w" style="padding-bottom:3rem">
-    <div style="display:grid;grid-template-columns:auto 1fr;align-items:end;gap:1.5rem;margin-bottom:1.75rem">
-      <div class="ao l"><div class="lbl">03 — Top películas · Visualizaciones 2025</div><h2 class="sh">Animación,<br>comedia y acción</h2></div>
-      <div class="ao r" style="max-width:380px"><p class="bt" style="font-size:.88rem"><strong>KPop Demon Hunters arrasó con 518M.</strong> El segundo puesto logró 190M. Una diferencia de <strong>328 millones</strong>. La película logró más visionados que cualquier saga del catálogo combinada. El gráfico lo dice todo.</p></div>
-    </div>
-    <div class="topviz-movies ao" id="m-topviz">
-      <div class="topviz-hero" id="m-topviz-hero">
-        <div class="topviz-hero-bg" id="m-hero-bg"></div>
-        <div class="topviz-hero-grad"></div>
-        <div class="topviz-hero-info" id="m-hero-info">
-          <div class="thi-rk">Selecciona o pasa el cursor</div>
-          <div class="thi-tt">— Top Películas 2025 —</div>
-          <div class="thi-vw" style="color:var(--r)"></div>
-        </div>
-      </div>
-      <div class="topviz-bars" id="m-topviz-bars"></div>
-    </div>
-  </div></section>
-
-  <!-- KPOP -->
-  <div id="kpop"><div id="kbg"></div>
-    <div class="kc ao">
-      <div class="lbl g" style="color:#F5C518">El fenómeno del año</div>
-      <div class="bbs" style="font-size:clamp(5rem,17vw,13rem);line-height:.9;color:var(--g);text-shadow:0 4px 60px rgba(245,197,24,.5)">518M</div>
-      <div class="bbs" style="font-size:clamp(1.5rem,4vw,3rem);color:#ffffff;letter-spacing:.06em;margin-top:.5rem;text-shadow:0 2px 20px rgba(0,0,0,.8)">KPop Demon Hunters</div>
-      <p style="margin-top:1.25rem;max-width:520px;margin-left:auto;margin-right:auto;font-size:1rem;color:rgba(255,255,255,.85);line-height:1.7">La segunda película tiene 190M. La diferencia fue de <strong style="color:#fff">328 millones</strong>. No es un éxito: es una anomalía.</p>
+    <div class="chart-box">
+      <h3>Revenue por plan por año (€)</h3>
+      <div class="chart-container"><canvas id="chartPlanRevenue"></canvas></div>
     </div>
   </div>
 
-  <hr class="dv">
+  <div class="chart-box full" style="margin-bottom:24px">
+    <h3>Perfil comparativo por plan (2025)</h3>
+    <table>
+      <thead>
+        <tr><th>Plan</th><th class="num">Clientes</th><th class="num">Tickets</th><th class="num">Revenue</th><th class="num">€/ticket</th><th class="num">Tickets/cliente</th><th class="num">Visitas/cliente</th><th class="num">% recargo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="plan-badge gold">PLANGOLD</span></td>
+          <td class="num">628</td><td class="num">5.241</td><td class="num">€35.528</td>
+          <td class="num highlight">€6,78</td><td class="num highlight">8,35</td><td class="num highlight">3,97</td><td class="num positive">3,5%</td>
+        </tr>
+        <tr>
+          <td><span class="plan-badge planeta">PLANET</span></td>
+          <td class="num">6.479</td><td class="num">34.435</td><td class="num">€291.099</td>
+          <td class="num">€8,45</td><td class="num">5,31</td><td class="num">2,24</td><td class="num">18,6%</td>
+        </tr>
+        <tr>
+          <td><span class="plan-badge familia">FAMILIA</span></td>
+          <td class="num">5.104</td><td class="num">31.530</td><td class="num">€264.563</td>
+          <td class="num">€8,39</td><td class="num">6,18</td><td class="num">2,07</td><td class="num">12,8%</td>
+        </tr>
+        <tr>
+          <td><span class="plan-badge jove">PLANETJOVE</span></td>
+          <td class="num">1.833</td><td class="num">8.693</td><td class="num">€77.050</td>
+          <td class="num">€8,86</td><td class="num">4,74</td><td class="num">1,90</td><td class="num">14,3%</td>
+        </tr>
+        <tr>
+          <td><span class="plan-badge nofid">NO FIDELIZADO</span></td>
+          <td class="num">43.255</td><td class="num">142.544</td><td class="num">€1.479.433</td>
+          <td class="num negative">€10,38</td><td class="num negative">3,30</td><td class="num negative">1,27</td><td class="num negative">32,7%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <!-- FRANQUICIAS - Treemaps interactivos -->
-  <section id="sec04"><div class="w wide">
-    <div class="lbl g ao">04 — Franquicias</div>
-    <h2 class="sh ao" style="margin-bottom:.5rem">La familiaridad<br>siempre gana</h2>
-    <p class="bt ao" style="margin-bottom:3rem;max-width:640px">Combinamos las visualizaciones de las sagas con más de una entrega en el Top 200. El tamaño representa el total acumulado. ¿He mencionado ya que Kpop Demon Hunters superó a 7 entregas de Gru? Creo que sí.</p>
-    
-    <div class="treemap-section ao">
-      <div class="treemap-title" style="color:var(--r)">🎬 Sagas de Películas · Views totales</div>
-      <div class="treemap-container" id="treemap-movies"></div>
+  <div class="insight-box">
+    <strong>PLANGOLD es el plan estrella:</strong> Con solo 628 clientes, genera la mayor frecuencia (4 visitas/año), el mayor gasto por cliente (€56,6/año), el ticket más barato (€6,78) y apenas un 3,5% de recargos. Son los "superfans" del cine. <strong>FAMILIA</strong> destaca por el mayor tamaño de grupo (2,83 tickets/transacción), lógico al tratarse de familias. <strong>PLANETJOVE</strong> tiene la menor frecuencia entre fidelizados y muestra signos de menor engagement. <strong>PLANET</strong> es el plan mayoritario, con un perfil equilibrado.
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Precio medio por ticket por plan (€)</h3>
+      <div class="chart-container"><canvas id="chartPlanPrice"></canvas></div>
     </div>
-    
-    <div class="treemap-section ao">
-      <div class="treemap-title" style="color:var(--c)">📺 Sagas de Series · Views totales</div>
-      <div class="treemap-container" id="treemap-series"></div>
+    <div class="chart-box">
+      <h3>Tickets por cliente por plan</h3>
+      <div class="chart-container"><canvas id="chartPlanTicketsClient"></canvas></div>
     </div>
-  </div></section>
-
-  <hr class="dv">
-
-  <section id="sec09" style="background:linear-gradient(135deg,rgba(255,107,53,.07),rgba(255,107,53,.01));border-top:1px solid rgba(255,107,53,.15);border-bottom:1px solid rgba(255,107,53,.15)">
-    <div class="w">
-      <div class="lbl sp ao">05 — Producción española</div>
-      <h2 class="sh ao" style="margin-bottom:.5rem">España en el<br><span style="color:var(--sp)">mapa global</span></h2>
-      <p class="bt ao" style="margin-bottom:2.5rem;max-width:580px"><strong>9 títulos entre los 400 más vistos del mundo.</strong> España compite con thriller, drama y comedia romántica.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
-        <div class="ao l">
-          <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sp);margin-bottom:1rem;font-weight:700">🎬 Películas Españolas · Podio</p>
-          <div class="sp-podium" id="sp-podium"></div>
-        </div>
-        <div class="ao r">
-          <p style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sp);margin-bottom:1rem;font-weight:700">📺 Series Españolas · Views</p>
-          <div class="sp-sbars" id="sp-sbar"></div>
-          <div class="casadepapel-wrap">
-            <p style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--r);font-weight:700;margin-bottom:.3rem">🏠 La Casa de Papel · Evolución por temporadas</p>
-            <p style="font-size:.78rem;color:var(--text2);margin-bottom:.1rem">Catálogo completo Netflix · Views en millones</p>
-            <div class="cdp-chart-wrap"><canvas id="c-cdp"></canvas></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="dv">
-
-  <!-- GÉNEROS -->
-  <section id="sec06"><div class="w">
-    <div class="lbl ao">06 — Los géneros</div>
-    <h2 class="sh ao" style="margin-bottom:.75rem">Drama en series.<br>Acción en películas.</h2>
-    <p class="bt ao" style="margin-bottom:2.75rem;max-width:640px">Analizando los géneros del Top 200 de películas y series, encontramos lo siguiente: en series lidera el Drama (43) seguido de Kids (36) y Thriller (19). En películas: Acción (50), Comedia (41) y Familiar (23).</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
-      <div class="ao l">
-        <div style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--c);margin-bottom:1rem;font-weight:700">📺 Géneros · Top 200 Series</div>
-        <div id="g-s-bars" class="gbars"></div>
-      </div>
-      <div class="ao r">
-        <div style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--r);margin-bottom:1rem;font-weight:700">🎬 Géneros · Top 200 Películas</div>
-        <div id="g-m-bars" class="gbars"></div>
-      </div>
-    </div>
-  </div></section>
-
-  <hr class="dv">
-
-  <section id="sec07" style="background:linear-gradient(135deg,rgba(229,9,20,.05),rgba(229,9,20,.01));border-top:1px solid rgba(229,9,20,.1);border-bottom:1px solid rgba(229,9,20,.1)">
-    <div class="w n" style="text-align:center">
-      <div class="lbl ao">07 — Animación</div>
-      <h2 class="sh ao" style="margin-bottom:.9rem">57 de 200 películas<br>del Top son animadas</h2>
-      <p class="bt ao" style="margin:0 auto 2rem;max-width:500px">Pasa el cursor sobre cada cuadrado para ver el título. <span style="color:var(--r)">■</span> Animación · <span style="color:#1a1a1a">■</span> Acción real</p>
-      <div style="display:flex;gap:2rem;align-items:flex-start;justify-content:center;flex-wrap:wrap">
-        <div id="wfl" class="wfl ao" style="max-width:540px;flex:1 1 300px"></div>
-        <div class="wt ao" id="wt" style="width:260px;flex-shrink:0"><p style="font-size:.62rem;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:1.5rem">Pasa el cursor<br>sobre un cuadrado</p></div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="dv">
-
-  <section id="sec08"><div class="w">
-    <div class="lbl gr ao">08 — Comparativa por temporadas</div>
-    <h2 class="sh ao" style="margin-bottom:.75rem">Cada temporada,<br>una historia diferente</h2>
-    <p class="bt ao" style="margin-bottom:.75rem;max-width:650px">Visualizaciones totales por temporada de algunas de las sagas de series más interesantes. ¿Es la última temporada lanzada siempre la más vista? Spoiler: no.</p>
-    <div class="ins gr ao" style="max-width:650px;margin-bottom:2.75rem"><p class="bt"><strong>Clave:</strong> Una T1 alta suele ser un buen indicador de discovery. Las temporadas siguientes sugieren retención. Y Black Mirror T7 lo rompe todo.</p></div>
-    <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:2.5rem;align-items:start">
-      <div class="ao l"><div class="sbtns" id="sb1"></div><div class="gl" id="ss1" style="padding:1.2rem;font-size:.82rem;color:var(--text2);min-height:90px"><p>Selecciona una saga</p></div></div>
-      <div class="gl ao r" style="padding:1.5rem"><div style="position:relative;height:280px"><canvas id="c-sea"></canvas></div></div>
-    </div>
-  </div></section>
-
-  <section style="background:linear-gradient(135deg,rgba(245,197,24,.07),rgba(245,197,24,.01));border-top:1px solid rgba(245,197,24,.12);border-bottom:1px solid rgba(245,197,24,.12)">
-    <div class="w n" style="text-align:center">
-      <div class="lbl g ao">La resurrección más espectacular</div>
-      <h2 class="sh ao" style="margin-bottom:.75rem">Black Mirror T7<br><span style="color:var(--g)">+599% vs T5</span></h2>
-      <p class="bt ao" style="margin:0 auto 2rem;max-width:540px">De 5,2M en T5 a 36,3M en T7. El mayor salto proporcional de todo el catálogo.</p>
-      <div class="gl ao" style="max-width:620px;margin:0 auto;padding:1.5rem"><div style="position:relative;height:220px"><canvas id="c-bm"></canvas></div></div>
-    </div>
-  </section>
-
-  <hr class="dv">
-
-  <!-- MAPA -->
-  <section id="sec05"><div class="w">
-    <div class="lbl ao">09 — El mapa</div>
-    <h2 class="sh ao" style="margin-bottom:1rem">Corea del Sur<br>y UK: los rivales</h2>
-    <p class="bt ao" style="margin-bottom:2rem;max-width:650px">¿Cuántas producciones aporta cada país a el Top 200 de series y pelçiculas? Para series: <strong>USA 113, UK 18, Corea 17, Japón 9, España 6, Brasil 6</strong>. En películas: USA 157/200. UK 9, Francia 8. La hegemonía americana en cine es aún mayor.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
-      <div class="ao l">
-        <div style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:700">🌍 Top 200 combinado · Títulos por país</div>
-        <div id="wmap-rank" class="crank"></div>
-        <p class="crank-note">Series + Películas · Top 200 cada lista</p>
-      </div>
-      <div class="ao r">
-        <div style="font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:700">🗺️ Mapa de calor mundial</div>
-        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--card-border);box-shadow:0 2px 12px rgba(0,0,0,.07);background:var(--card)"><div id="wmap" style="height:340px"></div></div>
-      </div>
-    </div>
-  </div></section>
-
-  <hr class="dv">
-
-  <section id="sec10" style="background:linear-gradient(135deg,rgba(0,207,255,.06),rgba(0,207,255,.01));border-top:1px solid rgba(0,207,255,.12);border-bottom:1px solid rgba(0,207,255,.12)">
-    <div class="w n" style="text-align:center">
-      <div class="lbl c ao">10 — Contenido infantil</div>
-      <h2 class="sh ao" style="margin-bottom:.75rem">Los niños no churnean.<br>Los padres tampoco.</h2>
-      <p class="bt ao" style="margin:0 auto 2rem;max-width:560px">Las franquicias de contenido infantil suponen un torrente de visualizaciones acumuladas. <strong>Peppa Pig combianda supera a Adolescence y a la 3ª temporada de Squid Game.</strong></p>
-      <div id="kids-grid" class="kids-grid ao" style="max-width:820px;margin:0 auto"></div>
-    </div>
-  </section>
-
-  <hr class="dv">
-
-  <section id="sec11"><div class="w n">
-    <div class="lbl g ao">11 — El podio definitivo</div>
-    <h2 class="sh ao" style="margin-bottom:.5rem">3 títulos que<br>pararon el mundo</h2>
-    <p class="bt ao" style="margin-bottom:2.25rem;max-width:520px">3 géneros, 3 países, 3 formatos. Todos superaron 150M de visualizaciones en un solo año.</p>
-    <div id="podio" class="ao"></div>
-  </div></section>
-
-  <hr class="dv">
-
-  <section><div class="w">
-    <div class="lbl g ao">Tu turno</div>
-    <h2 class="sh ao" style="margin-bottom:.75rem">Busca tu serie<br>o película favorita</h2>
-    <p class="bt ao" style="margin-bottom:2rem;max-width:560px">Todo el catálogo Netflix 2025: más de 19.000 títulos.</p>
-    <div class="gl ao" style="padding:2rem">
-      <div class="sw" style="margin-bottom:1.5rem">
-        <svg class="sic" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" class="si" id="s-in" placeholder="Ej: Squid Game, Barbie, The Office…">
-      </div>
-      <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--card-border);max-height:440px;overflow-y:auto">
-        <table class="rt"><thead><tr><th>Título</th><th>Tipo</th><th style="text-align:right">Views (M)</th><th style="text-align:right">Horas</th></tr></thead><tbody id="s-body"></tbody></table>
-      </div>
-      <div id="s-info" style="font-size:.68rem;color:var(--text3);margin-top:.65rem;letter-spacing:.12em;text-transform:uppercase"></div>
-    </div>
-  </div></section>
-
-  <footer style="text-align:center;padding:1.75rem;border-top:1px solid var(--card-border)">
-    <p style="font-size:.68rem;color:var(--text3)">Datos oficiales Netflix 2025</p>
-  </footer>
+  </div>
 </div>
 
-<!-- ══════ DASHBOARD ══════ -->
-<div id="vd" class="view" style="padding-top:56px;position:relative;z-index:1">
-  <div class="dbw">
-    <!-- FILTROS -->
-    <div class="dbc" style="margin-top:0">
-      <div class="dbt">Filtros — Top 200 Series + Películas</div>
-      <div style="display:flex;flex-wrap:wrap;gap:1.5rem">
-        <div><p style="font-size:.57rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.38rem">País</p><div class="fr" id="f-c"></div></div>
-        <div><p style="font-size:.57rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.38rem">Género</p><div class="fr" id="f-g"></div></div>
-        <div><p style="font-size:.57rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.38rem">Animación</p><div class="fr" id="f-a"></div></div>
-        <div><p style="font-size:.57rem;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.38rem">Formato</p><div class="fr" id="f-f"></div></div>
-        <div style="margin-left:auto;display:flex;align-items:flex-end">
-          <button onclick="rF()" style="padding:.26rem .85rem;border-radius:999px;font-size:.67rem;font-weight:600;border:1px solid var(--card-border);background:transparent;color:var(--text3);cursor:pointer">Reset</button>
-        </div>
-      </div>
+<!-- ============ SECTION 4 ============ -->
+<div class="section" id="s4">
+  <div class="section-title">04 — Frecuencia de visita</div>
+  <div class="section-subtitle">El motor de recurrencia: cuánto vuelven y quiénes</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-value teal">2.4</div>
+      <div class="kpi-label">Visitas/año fidelizado</div>
     </div>
+    <div class="kpi">
+      <div class="kpi-value">1.3</div>
+      <div class="kpi-label">Visitas/año no fidelizado</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value red">58%</div>
+      <div class="kpi-label">Fidelizados con 1 sola visita</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value green">11.7%</div>
+      <div class="kpi-label">Fidelizados con 5+ visitas</div>
+    </div>
+  </div>
 
-    <!-- KPI ROW -->
-    <div class="dbg">
-      <div class="dbc c3"><div class="dbt">Película #1</div><div class="ds" style="color:var(--r)" id="db-mv">—</div><div class="dsub" id="db-mt">—</div></div>
-      <div class="dbc c3"><div class="dbt">Serie #1</div><div class="ds" style="color:var(--c)" id="db-sv">—</div><div class="dsub" id="db-st">—</div></div>
-      <div class="dbc c3"><div class="dbt">Views catálogo total</div><div class="ds" style="color:var(--g)" id="db-tv">—</div><div class="dsub">Miles de millones</div></div>
-      <div class="dbc c3"><div class="dbt">Títulos filtrados</div><div class="ds" style="color:var(--p)" id="db-ft">—</div><div class="dsub">del top 200</div></div>
+  <div class="chart-grid">
+    <div class="chart-box full">
+      <h3>Distribución de frecuencia: fidelizados vs no fidelizados</h3>
+      <div class="chart-container"><canvas id="chartFreqDist"></canvas></div>
+    </div>
+  </div>
 
-      <!-- TOP PELÍCULAS (ranking) -->
-      <div class="dbc c6">
-        <div class="dbt">🎬 Top Películas · Visualizaciones</div>
-        <div id="db-pm-rank"></div>
+  <div class="insight-box">
+    <strong>La "larga cola":</strong> Incluso entre fidelizados, ~58% solo visitan 1 vez al año. El verdadero motor del programa son el ~12% con 5+ visitas y el ~3% con 10+ visitas. Estos "power users" representan una porción desproporcionada del revenue. <strong>PLANGOLD</strong> tiene la frecuencia más alta (mediana 2, media ~4), mientras que PLANETJOVE muestra la peor recurrencia entre planes fidelizados. La frecuencia media fidelizada ha bajado de 2.60 (2023) a 2.22 (2025).
+  </div>
+</div>
+
+<!-- ============ SECTION 5 ============ -->
+<div class="section" id="s5">
+  <div class="section-title">05 — Retención, fuga y captación</div>
+  <div class="section-subtitle">¿Cuántos repiten? ¿Cuántos se pierden? ¿Cuántos nuevos llegan?</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-value red">~56%</div>
+      <div class="kpi-label">Tasa de fuga anual</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value teal">~44%</div>
+      <div class="kpi-label">Tasa de retención anual</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value green">8.183</div>
+      <div class="kpi-label">Nuevos fidelizados 2025</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value">26%</div>
+      <div class="kpi-label">Retenidos los 3 años</div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Flujo de fidelizados: retención vs captación vs fuga</h3>
+      <div class="chart-container tall"><canvas id="chartRetention"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Retención por plan (% que repiten al año siguiente)</h3>
+      <div class="chart-container tall"><canvas id="chartRetPlan"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>La retención es el talón de Aquiles:</strong> Solo el 42–45% de los fidelizados repiten al año siguiente. PLANGOLD retiene al ~50% (el más alto), mientras PLANETJOVE solo al ~34%. Sin embargo, la captación de nuevos compensa parcialmente la fuga: 8.183 nuevos fidelizados entraron en 2025. El dato crítico: los <strong>4.289 clientes activos los 3 años</strong> (solo el 26% de los de 2023) generan el <strong>48% de todo el revenue fidelizado</strong>.
+  </div>
+
+  <div class="chart-box full" style="margin-bottom:24px">
+    <h3>Retención por plan: detalle numérico</h3>
+    <table>
+      <thead>
+        <tr><th>Plan</th><th class="num">Retención 23→24</th><th class="num">Retención 24→25</th><th class="num">Migración entre planes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="plan-badge gold">PLANGOLD</span></td><td class="num highlight">49,3%</td><td class="num highlight">49,9%</td><td class="num">~0% (máxima fidelidad)</td></tr>
+        <tr><td><span class="plan-badge familia">FAMILIA</span></td><td class="num">44,6%</td><td class="num">46,0%</td><td class="num">~0%</td></tr>
+        <tr><td><span class="plan-badge planet">PLANET</span></td><td class="num">41,3%</td><td class="num">44,8%</td><td class="num">~0.5% migran a JOVE</td></tr>
+        <tr><td><span class="plan-badge jove">PLANETJOVE</span></td><td class="num negative">31,9%</td><td class="num negative">37,2%</td><td class="num">~0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box">
+    <strong>Migración entre planes virtualmente inexistente (~99% se mantienen).</strong> Esto indica que los clientes no ascienden ni descienden entre planes: o se quedan en el suyo o abandonan el programa. No hay un "journey" de evolución (ej: PLANET → PLANGOLD). Oportunidad clara de diseñar un camino de upgrade.
+  </div>
+</div>
+
+<!-- ============ SECTION 6 ============ -->
+<div class="section" id="s6">
+  <div class="section-title">06 — Valor del cliente (CLV proxy)</div>
+  <div class="section-subtitle">El 26% que se queda 3 años genera casi la mitad del revenue fidelizado</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Revenue por antigüedad del fidelizado (2023-2025)</h3>
+      <div class="chart-container"><canvas id="chartCLV"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Revenue acumulado por segmento de antigüedad</h3>
+      <div class="chart-container"><canvas id="chartCLVshare"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Concentración extrema de valor:</strong> 4.318 clientes activos los 3 años (solo el 15% del total de fidelizados únicos) generan <strong>€1.050.419</strong>, el 47,9% del revenue fidelizado. Su gasto medio acumulado es de €243 vs €33 de los de 1 solo año. Retener un cliente fidelizado un año más <strong>triplica su valor</strong>.
+  </div>
+</div>
+
+<!-- ============ SECTION 7 ============ -->
+<div class="section" id="s7">
+  <div class="section-title">07 — Formatos premium y recargos</div>
+  <div class="section-subtitle">4DX, ScreenX, 3D: ¿quién consume más formato premium?</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>% tickets en formato 4DX</h3>
+      <div class="chart-container"><canvas id="chart4DX"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>% del revenue que son recargos</h3>
+      <div class="chart-container"><canvas id="chartRecargo"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Los no fidelizados son los mayores consumidores de 4DX:</strong> 39–47% de sus tickets son 4DX frente a solo 17–23% de los fidelizados. Esto explica gran parte de la diferencia de precio: el público ocasional viene atraído por la experiencia premium. En 2025, los recargos representan un <strong>32,7% del revenue de no fidelizados</strong> vs solo 3,5% en PLANGOLD. El formato 4DX es un driver de revenue masivo para público no fidelizado pero no está siendo aprovechado para captar fidelizados.
+  </div>
+</div>
+
+<!-- ============ SECTION 8 ============ -->
+<div class="section" id="s8">
+  <div class="section-title">08 — Anticipación y hábitos de compra</div>
+  <div class="section-subtitle">¿Cuándo compran? ¿Cómo planifican?</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Anticipación de compra (días antes de la sesión)</h3>
+      <div class="chart-container"><canvas id="chartAnticipacion"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Tamaño de grupo por plan (tickets/transacción)</h3>
+      <div class="chart-container"><canvas id="chartGroupSize"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>El fidelizado es espontáneo:</strong> El 76,4% compra el mismo día de la sesión vs 54,6% de los no fidelizados. Solo el 7% compra con 4+ días de antelación (vs 17% de no fidelizados). Esto indica que el fidelizado tiene un hábito consolidado ("voy al cine hoy") mientras el no fidelizado planifica más (probablemente vinculado a eventos/formatos premium). <strong>FAMILIA</strong> tiene el grupo más grande (2,83 tickets/txn) y <strong>PLANGOLD</strong> el más pequeño (2,05), perfil de cinéfilo individual o en pareja.
+  </div>
+</div>
+
+<!-- ============ SECTION 9 ============ -->
+<div class="section" id="s9">
+  <div class="section-title">09 — Q1 2026 vs histórico</div>
+  <div class="section-subtitle">¿Cómo va el año? Comparativa enero-marzo</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Q1 comparativo: tickets totales</h3>
+      <div class="chart-container"><canvas id="chartQ1tickets"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Q1 comparativo: % penetración fidelizados</h3>
+      <div class="chart-container"><canvas id="chartQ1pct"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Q1 2026 muestra recuperación de volumen pero pérdida de penetración:</strong> Con 52.533 tickets, Q1 2026 iguala los niveles de Q1 2023. Sin embargo, la penetración fidelizada ha bajado al <strong>37,2%</strong> (vs 42,1% en Q1 2023). Aunque hay más clientes fidelizados activos (5.634 vs 3.510 en Q1 2025), su peso relativo cae porque el público general crece más rápido. El mercado se está expandiendo pero el programa de fidelización no captura esa expansión.
+  </div>
+</div>
+
+<!-- ============ SECTION 10: CONVERSION ============ -->
+<div class="section" id="s10">
+  <div class="section-title">10 — De no fidelizado a fidelizado</div>
+  <div class="section-subtitle">¿Qué pasa cuando alguien da el paso? ¿Merece la pena fidelizar? ¿Qué lo provoca?</div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-value red">2–4%</div>
+      <div class="kpi-label">Tasa de conversión anual</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value green">+57%</div>
+      <div class="kpi-label">Más tickets tras fidelizarse</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value teal">+51%</div>
+      <div class="kpi-label">Más revenue por cliente</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-value gold">−30pp</div>
+      <div class="kpi-label">Menos "1 sola visita"</div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Sí, fidelizar vale la pena — y mucho.</strong> Solo entre un 2% y un 4% de los no fidelizados se convierten cada año (~930 en 2024, ~1.400 en 2025). Pero cuando lo hacen, su comportamiento cambia radicalmente: compran un <strong>57% más de tickets</strong>, gastan un <strong>51% más</strong>, y el porcentaje que solo visita 1 vez al año cae del ~64% al ~42%. La conversión transforma clientes ocasionales en clientes recurrentes.
+  </div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Antes vs Después de fidelizarse: métricas clave</h3>
+      <div class="chart-container tall"><canvas id="chartConvBA"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Convertido vs No-convertido vs Ya fidelizado (media 2024-2025)</h3>
+      <div class="chart-container tall"><canvas id="chartConvTriple"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-box full" style="margin-bottom:24px">
+    <h3>El efecto conversión: antes vs después (media de las transiciones 2023→2024 y 2024→2025)</h3>
+    <table>
+      <thead>
+        <tr><th></th><th class="num">ANTES<br><small>(como no fidelizado)</small></th><th class="num">DESPUÉS<br><small>(ya fidelizado)</small></th><th class="num">Cambio</th><th class="num">No-convertido<br><small>(grupo control)</small></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Visitas/año</td><td class="num">1,80</td><td class="num highlight">2,49</td><td class="num positive">+38%</td><td class="num">1,76</td></tr>
+        <tr><td>Tickets/año</td><td class="num">4,7</td><td class="num highlight">6,7</td><td class="num positive">+43%</td><td class="num">4,6</td></tr>
+        <tr><td>Revenue/año</td><td class="num">€41,4</td><td class="num highlight">€58,6</td><td class="num positive">+42%</td><td class="num">€41,6</td></tr>
+        <tr><td>Precio/ticket</td><td class="num">€8,83</td><td class="num">€8,82</td><td class="num">≈ igual</td><td class="num">€9,18</td></tr>
+        <tr><td>% con 1 sola visita</td><td class="num negative">64,4%</td><td class="num highlight">42,9%</td><td class="num positive">−21,5pp</td><td class="num negative">62,4%</td></tr>
+        <tr><td>% con 3+ visitas</td><td class="num">15,7%</td><td class="num highlight">33,0%</td><td class="num positive">+17pp</td><td class="num">16,5%</td></tr>
+        <tr><td>% recargo/revenue</td><td class="num">14,7%</td><td class="num highlight">15,1%</td><td class="num">≈ igual</td><td class="num">13,1%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="insight-box">
+    <strong>Dato clave:</strong> El precio por ticket prácticamente no cambia tras fidelizarse (~€8,83 antes → ~€8,82 después). El gran cambio no es que paguen menos por entrada, sino que <strong>vienen muchas más veces</strong>. Los que no se convierten mantienen un comportamiento plano año tras año (~1,76 visitas, ~€41,6). La fidelización no es un descuento — es un catalizador de frecuencia.
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-subtitle" style="margin-top:20px;">¿Qué hace que alguien se fidelice?</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>¿A qué plan se unen los convertidos?</h3>
+      <div class="chart-container"><canvas id="chartConvPlan"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>¿En qué mes se fidielizan? (primera compra como fidelizado)</h3>
+      <div class="chart-container"><canvas id="chartConvMonth"></canvas></div>
+    </div>
+  </div>
+
+  <div class="chart-box full" style="margin-bottom:24px">
+    <h3>Top películas que vieron los futuros convertidos antes de dar el paso</h3>
+    <div class="two-col">
+      <div>
+        <h4 style="font-size:0.85em; color: var(--text-dim); margin-bottom:8px;">En 2023 (antes de fidelizarse en 2024)</h4>
+        <table>
+          <tbody>
+            <tr><td>1. Barbie</td><td class="num">325 tix</td></tr>
+            <tr><td>2. (4DX)(3D) Avatar: El sentido del agua</td><td class="num">229 tix</td></tr>
+            <tr><td>3. Super Mario Bros</td><td class="num">216 tix</td></tr>
+            <tr><td>4. (4DX)(3D) Super Mario Bros</td><td class="num">147 tix</td></tr>
+            <tr><td>5. Elemental</td><td class="num">91 tix</td></tr>
+          </tbody>
+        </table>
       </div>
-
-      <!-- TOP SERIES (ranking) -->
-      <div class="dbc c6">
-        <div class="dbt">📺 Top Series · Visualizaciones</div>
-        <div id="db-ls"></div>
-      </div>
-
-      <!-- SAGAS PELÍCULAS -->
-      <div class="dbc c6">
-        <div class="dbt">🎬 Sagas Películas · Views acumuladas</div>
-        <div style="position:relative;height:230px"><canvas id="db-sm"></canvas></div>
-      </div>
-
-      <!-- SAGAS SERIES -->
-      <div class="dbc c6">
-        <div class="dbt">📺 Sagas Series · Views acumuladas</div>
-        <div style="position:relative;height:230px"><canvas id="db-ss"></canvas></div>
-      </div>
-
-      <!-- PAÍSES SERIES -->
-      <div class="dbc c4">
-        <div class="dbt">🌍 Países · Series</div>
-        <div style="position:relative;height:220px"><canvas id="db-cs"></canvas></div>
-      </div>
-
-      <!-- GÉNEROS SERIES -->
-      <div class="dbc c4">
-        <div class="dbt">📺 Géneros · Series</div>
-        <div style="position:relative;height:220px"><canvas id="db-gs"></canvas></div>
-      </div>
-
-      <!-- GÉNEROS PELÍCULAS -->
-      <div class="dbc c4">
-        <div class="dbt">🎬 Géneros · Películas</div>
-        <div style="position:relative;height:220px"><canvas id="db-gm"></canvas></div>
-      </div>
-
-      <!-- TEMPORADAS -->
-      <div class="dbc c12">
-        <div class="dbt">Comparativa por temporadas</div>
-        <div class="sbtns" id="sb2"></div>
-        <div style="position:relative;height:155px"><canvas id="c-sea2"></canvas></div>
-      </div>
-
-      <!-- BUSCADOR -->
-      <div class="dbc c12">
-        <div class="dbt">Buscador completo</div>
-        <div class="sw" style="margin-bottom:.9rem">
-          <svg class="sic" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" class="si" id="sd-in" placeholder="Busca un título…">
-        </div>
-        <div style="overflow-x:auto;border-radius:8px;border:1px solid var(--card-border);max-height:310px;overflow-y:auto">
-          <table class="rt"><thead><tr><th>Título</th><th>Tipo</th><th style="text-align:right">Views (M)</th><th style="text-align:right">Horas</th></tr></thead><tbody id="sd-body"></tbody></table>
-        </div>
-        <div id="sd-info" style="font-size:.68rem;color:var(--text3);margin-top:.5rem;letter-spacing:.12em;text-transform:uppercase"></div>
+      <div>
+        <h4 style="font-size:0.85em; color: var(--text-dim); margin-bottom:8px;">En 2024 (antes de fidelizarse en 2025)</h4>
+        <table>
+          <tbody>
+            <tr><td>1. Del revés 2 (Inside Out 2)</td><td class="num">531 tix</td></tr>
+            <tr><td>2. Gru 4: mi villano favorito</td><td class="num">362 tix</td></tr>
+            <tr><td>3. Deadpool y Lobezno</td><td class="num">333 tix</td></tr>
+            <tr><td>4. Vaiana 2</td><td class="num">207 tix</td></tr>
+            <tr><td>5. Robot Salvaje</td><td class="num">186 tix</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
+
+  <div class="insight-box">
+    <strong>El perfil del convertido:</strong> El ~48% se une a <strong>PLANET</strong> y el ~37% a <strong>FAMILIA</strong>. PLANGOLD apenas capta un 2% de los nuevos — su crecimiento depende de "upgrades" internos que hoy no ocurren. Las películas que anteceden la conversión son grandes <strong>títulos familiares y blockbusters de animación</strong> (Barbie, Mario, Inside Out, Gru), no formatos premium. Las conversiones se concentran en <strong>diciembre y verano</strong> — temporadas de alta afluencia, cuando la diferencia de precio resulta más tangible.
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-subtitle" style="margin-top:20px;">¿Los convertidos se quedan?</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>Destino de los 932 convertidos en 2024 → ¿qué pasa en 2025?</h3>
+      <div class="chart-container"><canvas id="chartConvRetention"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>Retención: convertidos recientes vs fidelizados originales</h3>
+      <div class="chart-container"><canvas id="chartConvVsOrig"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Los convertidos retienen peor:</strong> De los 932 que se fidelizaron en 2024, solo el <strong>33,9% siguen como fidelizados en 2025</strong> (vs 46,1% de los fidelizados originales). Un 17,8% vuelve pero como no fidelizado, y el 48,3% directamente desaparece. El primer año tras la conversión es el más crítico — si no se les "ancla" con experiencias y valor, la mitad se pierde. <strong>Hay una ventana de oportunidad clara en los primeros 3–6 meses post-conversión</strong> para consolidar el hábito.
+  </div>
+
+  <div class="callout" style="border-left: 3px solid var(--accent); margin-top: 20px;">
+    <h4 style="color: var(--accent);">🎯 Resumen ejecutivo: ¿Vale la pena fidelizar?</h4>
+    <div style="font-size:0.9em; color: var(--text-dim); line-height:1.9; margin-top:8px;">
+      <p><strong>Sí, con matices.</strong> La conversión dispara la frecuencia (+38% visitas) y el revenue (+42%) sin apenas reducir el precio por ticket. Pero la tasa de conversión natural es muy baja (2–4%) y la retención de los recién convertidos es 12 puntos peor que la del fidelizado veterano.</p>
+      <p style="margin-top:8px;">Las acciones concretas serían: <strong>(1)</strong> Captar en el momento caliente — ofrecer la fidelización en taquilla/app cuando el cliente compra su 2ª o 3ª entrada del año para un blockbuster familiar. <strong>(2)</strong> Onboarding agresivo — una promoción de "bienvenida" que incentive la 2ª y 3ª visita en los primeros 3 meses. <strong>(3)</strong> No centrar el pitch en el descuento (el precio apenas cambia), sino en la conveniencia, la prioridad de acceso y la pertenencia.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 11: MOVIES ============ -->
+<div class="section" id="s11">
+  <div class="section-title">11 — El mapa de películas: ¿cuáles son "de fidelizados" y cuáles convierten?</div>
+  <div class="section-subtitle">Qué títulos atraen a tu base fiel, cuáles traen público nuevo, y cuáles actúan como puerta de entrada al programa</div>
+
+  <div class="insight-box">
+    <strong>Dos preguntas, dos rankings distintos.</strong> Una película puede tener alto % de público fidelizado (es "territorio fiel") sin convertir a nadie nuevo. Y otra puede ser la que más primeras compras fidelizadas genera sin que su audiencia global sea mayoritariamente fidelizada. Ambas métricas son valiosas: la primera identifica <strong>dónde está tu base</strong>; la segunda, <strong>qué atrae a gente nueva al programa</strong>.
+  </div>
+
+  <!-- ===== PELÍCULAS CON MAYOR % FIDELIZADO ===== -->
+  <div class="section-subtitle" style="margin-top:20px; color: var(--plan-planet); font-weight:600;">Películas "territorio fidelizado": mayor % de tickets de fidelizados</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>2023 — Top % fidelizado (agrupado, mín 500 tix)</h3>
+      <div class="chart-container tall"><canvas id="chartMovFid2023"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>2024 — Top % fidelizado</h3>
+      <div class="chart-container tall"><canvas id="chartMovFid2024"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>2025 — Top % fidelizado</h3>
+      <div class="chart-container tall"><canvas id="chartMovFid2025"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>2026 — Top % fidelizado (mín 300 tix)</h3>
+      <div class="chart-container tall"><canvas id="chartMovFid2026"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>El perfil "película de fidelizado":</strong> Son títulos de acción/thriller adulto, franquicias de superhéroes "de nicho" y comedias españolas. M3GAN, Scream, John Wick, Flash, Beekeeper, Godzilla y Kong, Predator, A Working Man, Scream 7... Tienen algo en común: <strong>no son el megablockbuster del verano</strong> (ese atrae a todo el mundo), sino la cartelera regular que mueve al espectador habitual. El fidelizado va al cine por rutina, no solo por eventos. También destaca el <strong>cine español</strong> (Comunión, Mari(dos), García y García, Goat, Abuela Tremenda): los fidelizados son su público natural.
+  </div>
+
+  <div class="insight-box" style="background: linear-gradient(135deg, rgba(127,140,155,0.1), rgba(127,140,155,0.02)); border-left-color: var(--plan-nofid);">
+    <strong>Y las películas "de no fidelizado":</strong> Los formatos <strong>4DX</strong> dominan la parte baja (Polar Express 4DX con solo 5-11% de fidelizados, Avatar 4DX con ~20-24%). También las proyecciones <strong>VOSI/VOSE de Bollywood</strong> (Pathaan, Animal, Pushpa 2, Dhurandhar) y los <strong>eventos especiales</strong> (One Piece, Harry Potter, Coraline aniversario). Estos segmentos aportan mucho volumen e ingresos por recargo, pero son casi impermeables al programa de fidelización.
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== PELÍCULAS QUE MÁS CONVIERTEN ===== -->
+  <div class="section-subtitle" style="margin-top:20px; color: var(--accent); font-weight:600;">Películas "puerta de entrada": primera compra como fidelizado</div>
+
+  <div class="chart-grid">
+    <div class="chart-box">
+      <h3>2023 — Primeras compras fidelizadas (16.417 nuevos)</h3>
+      <div class="chart-container tall"><canvas id="chartMovConv2023"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>2024 — Primeras compras fidelizadas (6.076 nuevos)</h3>
+      <div class="chart-container tall"><canvas id="chartMovConv2024"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>2025 — Primeras compras fidelizadas (6.730 nuevos)</h3>
+      <div class="chart-container tall"><canvas id="chartMovConv2025"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <h3>2026 — Primeras compras fidelizadas (2.051 nuevos)</h3>
+      <div class="chart-container tall"><canvas id="chartMovConv2026"></canvas></div>
+    </div>
+  </div>
+
+  <div class="insight-box">
+    <strong>Las "máquinas de convertir" son un tipo de película muy distinto.</strong> Aquí mandan los <strong>megablockbusters familiares y las franquicias 4DX</strong>: Avatar (en todas sus versiones) es el conversor número 1 en 2023, 2025 y 2026 — solo Avatar 4DX generó 1.308 primeros fidelizados en 2023. Le siguen Super Mario Bros, Inside Out 2, Jurassic World y Cómo entrenar a tu dragón. La diferencia con la lista anterior es reveladora: <strong>las películas que convierten no son las que retienen</strong>. Son los grandes eventos los que generan la primera tarjeta, pero es la cartelera regular la que mantiene al fidelizado viniendo.
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== TABLA RESUMEN ===== -->
+  <div class="chart-box full" style="margin-bottom:24px">
+    <h3>Resumen: las dos caras de cada año</h3>
+    <table>
+      <thead>
+        <tr><th>Año</th><th>Película más "de fidelizados"<br><small>(mayor % público fiel)</small></th><th>% fid</th><th>Película que más convierte<br><small>(más primeras compras fidelizadas)</small></th><th class="num">Nuevos</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>2023</strong></td>
+          <td>La niña de la comunión</td><td class="num highlight">76,6%</td>
+          <td>Avatar: El sentido del agua (4DX 3D)</td><td class="num highlight">1.308</td>
+        </tr>
+        <tr>
+          <td><strong>2024</strong></td>
+          <td>Beekeeper: El protector</td><td class="num highlight">66,2%</td>
+          <td>Del revés 2 (Inside Out 2)</td><td class="num highlight">484</td>
+        </tr>
+        <tr>
+          <td><strong>2025</strong></td>
+          <td>Ballerina</td><td class="num highlight">62,5%</td>
+          <td>Avatar: Fuego y ceniza (4DX 3D)</td><td class="num highlight">562</td>
+        </tr>
+        <tr>
+          <td><strong>2026</strong></td>
+          <td>Greenland 2</td><td class="num highlight">72,7%</td>
+          <td>Avatar: Fuego y ceniza (4DX 3D)</td><td class="num highlight">518</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout" style="border-left: 3px solid var(--accent);">
+    <h4 style="color: var(--accent);">🎯 Implicaciones para la estrategia</h4>
+    <div style="font-size:0.9em; color: var(--text-dim); line-height:1.9; margin-top:8px;">
+      <p><strong>1. Captar en los blockbusters, retener con la cartelera.</strong> Los Avatar, Jurassic World e Inside Out son el momento perfecto para ofrecer la tarjeta — el cliente ya está emocionado, en familia, y dispuesto. Pero luego necesitas darle razones para volver a ver Beekeeper, Predator o Scream.</p>
+      <p style="margin-top:8px;"><strong>2. El 4DX es un canal de captación infrautilizado.</strong> Avatar 4DX es el mayor conversor de la historia de Filmax, pero el formato 4DX en general tiene bajísima penetración fidelizada (~20%). Crear un "Pack 4DX + Fidelización" podría capturar este público de alto valor que ya está pagando precios premium.</p>
+      <p style="margin-top:8px;"><strong>3. El cine español y el thriller adulto son el "hogar" del fidelizado.</strong> No generan avalanchas de nuevos clientes, pero son los títulos que hacen que el fidelizado vuelva semana tras semana. Destacar estos estrenos en las comunicaciones al fidelizado refuerza el hábito.</p>
+      <p style="margin-top:8px;"><strong>4. Los eventos VOSI/Bollywood y los relanzamientos nostálgicos (Polar Express, Harry Potter, Tiburón) son territorios casi exclusivos de no fidelizados.</strong> No merece la pena forzar la fidelización aquí — son audiencias con otro perfil de consumo. Mejor maximizar el revenue por recargo.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SECTION 12 ============ -->
+<div class="section" id="s12">
+  <div class="section-title">12 — Conclusiones y recomendaciones</div>
+  <div class="section-subtitle">Acciones prioritarias para el programa de fidelización</div>
+
+  <div class="two-col">
+    <div class="callout" style="border-left: 3px solid var(--negative);">
+      <h4 style="color: var(--negative);">⚠ Señales de alerta</h4>
+      <p style="font-size:0.9em; color: var(--text-dim); line-height:1.8;">
+        • Penetración en descenso: del 43% al 36% de tickets<br>
+        • Tasa de fuga del ~56% anual<br>
+        • Frecuencia en descenso: de 2.60 a 2.22 visitas/año<br>
+        • PLANETJOVE: la peor retención (32-37%) y frecuencia<br>
+        • Migración entre planes inexistente (sin upgrade path)<br>
+        • El 58% de fidelizados visitan solo 1 vez/año<br>
+        • Solo 2–4% de no fidelizados se convierten/año<br>
+        • El 48% de los recién convertidos desaparece al año
+      </p>
+    </div>
+    <div class="callout" style="border-left: 3px solid var(--positive);">
+      <h4 style="color: var(--positive);">✓ Fortalezas del programa</h4>
+      <p style="font-size:0.9em; color: var(--text-dim); line-height:1.8;">
+        • El fidelizado gasta +50% más por año que el no fidelizado<br>
+        • PLANGOLD: 50% retención, 4 visitas/año, €56,6/cliente<br>
+        • Los clientes de 3 años generan el 48% del revenue<br>
+        • Captación sólida: ~8.000 nuevos fidelizados/año<br>
+        • Compra espontánea (76% mismo día) = hábito consolidado<br>
+        • FAMILIA mueve grupos grandes (2,83 tickets/txn)<br>
+        • Convertirse dispara +42% revenue y +38% frecuencia<br>
+        • El precio/ticket no baja al fidelizarse (no es "regalar")
+      </p>
+    </div>
+  </div>
+
+  <div class="callout" style="border-left: 3px solid var(--accent); margin-top: 16px;">
+    <h4 style="color: var(--accent);">🎯 Recomendaciones estratégicas</h4>
+    <div style="font-size:0.9em; color: var(--text-dim); line-height:1.9; margin-top:8px;">
+      <p><strong>1. Reducir la fuga (prioridad máxima):</strong> Un programa de "win-back" con incentivo a los 3-6 meses de inactividad. El coste de retener es mínimo comparado con el CLV: cada fidelizado retenido un año más triplica su valor.</p>
+      <p style="margin-top:8px;"><strong>2. Crear un journey de ascenso PLANET → PLANGOLD:</strong> Actualmente el 99% nunca cambia de plan. Diseñar un camino aspiracional con beneficios progresivos y umbrales de visitas puede multiplicar la frecuencia.</p>
+      <p style="margin-top:8px;"><strong>3. Reactivar PLANETJOVE:</strong> El plan joven tiene la peor retención y frecuencia. Considerar incentivos específicos: descuentos en días laborables, promociones en grupo, experiencias sociales.</p>
+      <p style="margin-top:8px;"><strong>4. Capturar al público 4DX:</strong> El no fidelizado consume 2–3× más 4DX. Diseñar un "Pack experiencia" que combine fidelización + acceso preferente a formatos premium puede convertir a este público de alto valor.</p>
+      <p style="margin-top:8px;"><strong>5. Activar a los fidelizados de 1 visita:</strong> El 58% que solo viene una vez es la mayor oportunidad. Un incentivo de "segunda visita" (ej: descuento en el siguiente mes) podría mover significativamente la frecuencia media.</p>
+      <p style="margin-top:8px;"><strong>6. Reforzar los meses débiles (julio-agosto, diciembre):</strong> La penetración cae por debajo del 32%. Campañas específicas de "verano fidelizado" o puntos extra en temporada baja pueden estabilizar la curva.</p>
+      <p style="margin-top:8px;"><strong>7. Captar en el momento del blockbuster familiar:</strong> Los convertidos vieron Barbie, Inside Out 2, Mario antes de dar el paso. Ofrecer la fidelización justo cuando compran entradas para estos estrenos en familia es el momento óptimo de captación.</p>
+      <p style="margin-top:8px;"><strong>8. Onboarding de recién convertidos (primeros 90 días):</strong> El 48% de los recién convertidos desaparece al año siguiente. Un programa de bienvenida con incentivos para la 2ª y 3ª visita en los primeros 3 meses es crítico para reducir la fuga temprana del 66% al menos a niveles del veterano (~54%).</p>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <script>
-/* ══════════════════════════════════════════
-   DARK MODE
-══════════════════════════════════════════ */
-let isDark = true;
-document.body.classList.add('dark');
-function toggleDark() {
-  isDark = !isDark;
-  document.body.classList.toggle('dark', isDark);
-  document.querySelector('.dark-toggle').textContent = isDark ? '☀️' : '🌙';
-  // Update charts if they exist
-  updateChartsTheme();
-}
+Chart.defaults.color = '#8888a0';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.font.size = 12;
 
-function updateChartsTheme() {
-  const textColor = isDark ? '#888888' : '#888888';
-  const gridColor = isDark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.06)';
-  Chart.defaults.color = textColor;
-  // Rebuild charts that need theme update
-  Object.values(CH).forEach(chart => {
-    if (chart.options?.scales?.x) {
-      chart.options.scales.x.grid.color = gridColor;
-      chart.options.scales.x.ticks.color = textColor;
-    }
-    if (chart.options?.scales?.y) {
-      chart.options.scales.y.grid.color = gridColor;
-      chart.options.scales.y.ticks.color = textColor;
-    }
-    chart.update();
-  });
-}
-
-/* ══════════════════════════════════════════
-   PARTICLES - Potenciadas
-══════════════════════════════════════════ */
-const BC=document.getElementById('bgc'),BX=BC.getContext('2d');let PP=[];
-function rBC(){BC.width=innerWidth;BC.height=innerHeight}rBC();
-window.addEventListener('resize',()=>{rBC();makePP()},{ passive:true});
-function makePP(){
-  PP=[];
-  const n=Math.floor(BC.width*BC.height/8000); // Más partículas
-  const cl=[
-    'rgba(229,9,20,.7)',
-    'rgba(229,9,20,.5)',
-    'rgba(229,9,20,.3)',
-    'rgba(229,9,20,.15)',
-    'rgba(255,100,100,.4)',
-    'rgba(255,50,50,.25)'
-  ];
-  for(let i=0;i<n;i++){
-    PP.push({
-      x:Math.random()*BC.width,
-      y:Math.random()*BC.height,
-      vx:(Math.random()-.5)*.25,
-      vy:(Math.random()-.5)*.18+.08,
-      r:Math.random()*2.5+.5,
-      c:cl[~~(Math.random()*6)],
-      pulse:Math.random()*Math.PI*2,
-      pulseSpeed:Math.random()*.02+.01
-    });
-  }
-}
-makePP();
-(function loop(){
-  requestAnimationFrame(loop);
-  const bgColor = isDark ? '#0a0a0a' : '#ffffff';
-  BX.fillStyle=bgColor;
-  BX.fillRect(0,0,BC.width,BC.height);
-  PP.forEach(p=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.pulse+=p.pulseSpeed;
-    const pulseFactor = 0.3 + Math.sin(p.pulse) * 0.3;
-    if(p.y>BC.height+10)p.y=-10;
-    if(p.y<-10)p.y=BC.height+10;
-    if(p.x<-10)p.x=BC.width+10;
-    if(p.x>BC.width+10)p.x=-10;
-    BX.beginPath();
-    BX.arc(p.x,p.y,p.r*(1+pulseFactor*.3),0,Math.PI*2);
-    BX.fillStyle=p.c;
-    BX.fill();
-    // Glow effect
-    if(p.r > 1.5) {
-      BX.beginPath();
-      BX.arc(p.x,p.y,p.r*2,0,Math.PI*2);
-      BX.fillStyle=p.c.replace(/[\d.]+\)$/,`${pulseFactor*.3})`);
-      BX.fill();
-    }
-  });
-})();
-
-/* ══════════════════════════════════════════
-   PROGRESS + AOS + TABS
-══════════════════════════════════════════ */
-window.addEventListener('scroll',()=>{
-  const pct=scrollY/(document.documentElement.scrollHeight-innerHeight)*100;
-  document.getElementById('pb').style.width=pct+'%';
-  updateSideNav();
-},{passive:true});
-
-const IO=new IntersectionObserver(ee=>ee.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');IO.unobserve(e.target);}}),{threshold:.1});
-function initAOS(){document.querySelectorAll('.ao').forEach(el=>IO.observe(el));}
-
-function swT(t,b){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
-  document.getElementById('v'+t).classList.add('on');
-  b.classList.add('on');
-  const snav=document.getElementById('snav');
-  if(t==='i'){snav.classList.add('vis');}else{snav.classList.remove('vis');}
-}
-
-/* ── SECTION SIDEBAR LOGIC ── */
-const SEC_IDS=['hero','sec01','sec02','sec03','sec04','sec05','sec06','sec07','sec08','sec09','sec10','sec11'];
-const SEC_NAMES={hero:'Portada',sec01:'01 La escala',sec02:'02 Top Series',sec03:'03 Top Películas',sec04:'04 Franquicias',sec05:'05 El mapa',sec06:'06 Géneros',sec07:'07 Animación',sec08:'08 Temporadas',sec09:'09 España',sec10:'10 Kids',sec11:'11 Podio'};
-let currentSec='hero';
-
-function updateSideNav(){
-  let active='hero';
-  for(const id of SEC_IDS){
-    const el=document.getElementById(id);if(!el)continue;
-    if(el.getBoundingClientRect().top<=120)active=id;
-  }
-  if(active===currentSec)return;
-  currentSec=active;
-  document.querySelectorAll('.snd').forEach(d=>d.classList.toggle('on',d.dataset.sec===active));
-  const crumb=document.getElementById('nav-crumb');
-  if(crumb){crumb.textContent=SEC_NAMES[active]||'';crumb.classList.toggle('vis',active!=='hero');}
-}
-
-window.scrollToSec=function(id){
-  const el=document.getElementById(id);if(!el)return;
-  const top=id==='hero'?0:el.getBoundingClientRect().top+scrollY-64;
-  window.scrollTo({top,behavior:'smooth'});
+const COLORS = {
+  planet: '#4ecdc4', familia: '#ff6b6b', jove: '#ffe66d',
+  gold: '#f7b731', nofid: '#7f8c9b', accent: '#ff6b35', accent2: '#ffd166',
+  positive: '#2ecc71', negative: '#e74c3c'
 };
 
-setTimeout(()=>document.getElementById('snav').classList.add('vis'),1200);
-
-/* ══════════════════════════════════════════
-   CSV LOADING
-══════════════════════════════════════════ */
-const CSV_FILES = {
-  s200: './TOP_200_SERIES_NETFLIX_AUDIT.csv',
-  p200: './TOP_200_PELIS_NETFLIX_AUDIT.csv',
-  stot: './Series_Netflix_Totales.csv',
-  ptot: './Pelis_Netflix_Totales.csv'
-};
-
-function parseCSV(file){
-  return new Promise((res,rej)=>Papa.parse(file,{download:true,header:true,delimiter:',',skipEmptyLines:true,dynamicTyping:true,complete:r=>res(r.data),error:e=>rej(e)}));
-}
-function parseFile(f){
-  return new Promise((res,rej)=>Papa.parse(f,{header:true,delimiter:',',skipEmptyLines:true,dynamicTyping:true,complete:r=>res(r.data),error:e=>rej(e)}));
-}
-function img(r,pref){
-  const v=String(r[pref+' V']||'').trim();const h=String(r[pref+' H']||'').trim();const s=String(r[pref+' Saga']||'').trim();
-  if(v&&v!=='nan')return v; if(h&&h!=='nan')return h; if(s&&s!=='nan')return s; return '';
-}
-function imgH(r){const h=String(r['Image URL H']||'').trim();return (h&&h!=='nan')?h:img(r,'Image URL');}
-function imgV(r){const v=String(r['Image URL V']||'').trim();return (v&&v!=='nan')?v:imgH(r);}
-function imgS(r){const s=String(r['Image URL Saga']||'').trim();return (s&&s!=='nan')?s:imgV(r);}
-function cleanT(t){return (t||'').split(' //')[0].replace(/: Season (\d+)/i,' S$1').replace(/: Limited Series$/i,'').trim();}
-function cleanTFull(t){return (t||'').split(' //')[0].trim();}
-function fmtH(h){return h>=1e9?(h/1e9).toFixed(1)+'B h':h>=1e6?(h/1e6).toFixed(0)+'M h':(h/1e3).toFixed(0)+'K h';}
-function isAnim(r){return String(r.Animation||'').trim()==='Yes';}
-
-/* ══════════════════════════════════════════
-   CHART DEFAULTS
-══════════════════════════════════════════ */
-Chart.defaults.color='#888888';Chart.defaults.font.family="'DM Sans',sans-serif";
-Chart.defaults.plugins.tooltip.backgroundColor='rgba(255,255,255,.97)';
-Chart.defaults.plugins.tooltip.borderColor='rgba(0,0,0,.1)';
-Chart.defaults.plugins.tooltip.borderWidth=1;
-Chart.defaults.plugins.tooltip.titleColor='#111';
-Chart.defaults.plugins.tooltip.bodyColor='#555';
-Chart.defaults.plugins.tooltip.padding=11;
-const CH={};
-function destroyC(id){if(CH[id]){CH[id].destroy();delete CH[id];}}
-
-function hBarC(id,labels,data,colors,th=16,fs=11){
-  destroyC(id);const el=document.getElementById(id);if(!el)return;
-  CH[id]=new Chart(el,{type:'bar',data:{labels,datasets:[{data,backgroundColor:colors,borderRadius:5,borderSkipped:false,barThickness:th}]},
-    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${typeof ctx.raw==='number'&&ctx.raw>10?ctx.raw.toFixed(1)+'M':ctx.raw}`}}},
-      scales:{x:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#999'}},y:{grid:{display:false},ticks:{color:'#666',font:{size:fs}}}},
-      animation:{duration:1100,easing:'easeOutQuart'}}});
-}
-function lineC(id,label,labels,data,color){
-  destroyC(id);const el=document.getElementById(id);if(!el)return;
-  CH[id]=new Chart(el,{type:'line',data:{labels,datasets:[{label,data,borderColor:color,backgroundColor:color+'18',borderWidth:2.5,pointBackgroundColor:color,pointRadius:6,pointHoverRadius:9,tension:.35,fill:true}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw.toFixed(1)}M views`}}},
-      scales:{x:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#999'}},y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{color:'#999',callback:v=>v+'M'}}},
-      animation:{duration:900,easing:'easeInOutCubic'}}});
-}
-
-const SCOL={'Squid Game':'#E50914','Wednesday':'#9D4EDD','Stranger Things':'#00CFFF','Ms. Rachel':'#4CC9F0','Ginny & Georgia':'#FF6B6B','Peppa Pig':'#FF9FBF',"Gabby's Dollhouse":'#FFD93D','Young Sheldon':'#F97316','Masha and the Bear':'#A78BFA','The Night Agent':'#52B788','Alice in Borderland':'#EF4444','Breaking Bad':'#22C55E','CoComelon Lane':'#FF8FAB','My Life With the Walter Boys':'#F472B6','You':'#FF9F1C','XO, Kitty':'#F59E0B','Little Angel':'#60A5FA','Nobody Wants This':'#6BCB77','The Recruit':'#38BDF8','Bebefinn':'#FCD34D','Beauty in Black':'#CD853F','The Witcher':'#C084FC','PAW Patrol':'#34D399','The Sandman':'#94A3B8','Bridgerton':'#F472B6','Yellowstone':'#D97706','Brooklyn Nine-Nine':'#60A5FA','Lottie Dottie Chicken':'#FB923C','Demon Slayer: Kimetsu no Yaiba':'#F87171','American Manhunt':'#A3E635','Black Mirror':'#e8e8e8'};
-
-/* ══════════════════════════════════════════
-   MAIN BUILD
-══════════════════════════════════════════ */
-function buildAll(s200raw, p200raw, stotr, ptotr){
-  const S = [...s200raw].sort((a,b)=>(b.Views||0)-(a.Views||0));
-  const P = [...p200raw].sort((a,b)=>(b.Views||0)-(a.Views||0));
-  const stot=[...stotr].sort((a,b)=>(b.Views||0)-(a.Views||0));
-  const ptot=[...ptotr].sort((a,b)=>(b.Views||0)-(a.Views||0));
-
-  const ls=document.getElementById('ls');ls.classList.add('gone');
-  setTimeout(()=>{ls.style.display='none';initAOS();},900);
-
-  /* ── COUNTERS ── */
-  const pv=ptot.reduce((s,r)=>s+(r.Views||0),0);
-  const sv=stot.reduce((s,r)=>s+(r.Views||0),0);
-  function animC(id,target,dec=1){const el=document.getElementById(id);if(!el)return;let v=0;const inc=target/110;const t=setInterval(()=>{v=Math.min(v+inc,target);el.textContent=dec?v.toFixed(dec):Math.round(v).toLocaleString('es-ES');if(v>=target)clearInterval(t);},16);}
-  animC('c-pm',ptot.length,0);animC('c-sm',stot.length,0);
-  animC('c-pv',pv/1e9,1);animC('c-sv',sv/1e9,1);
-  document.getElementById('db-tv').textContent=((pv+sv)/1e9).toFixed(1)+'B';
-
-  /* ── KPOP BG ── */
-  const kbg=document.getElementById('kbg');
-  const p0=P[0];if(p0){const ph=imgH(p0)||imgV(p0);if(ph)kbg.style.backgroundImage=`url('${ph}')`;} 
-
-  /* ── TOP SERIES ── */
-  (function buildSeriesTopViz(){
-    const rows=S.slice(0,10);
-    const maxV=rows[0]?((rows[0].Views||0)/1e6):1;
-    const barsEl=document.getElementById('s-topviz-bars');
-    const heroBg=document.getElementById('s-hero-bg');
-    const heroInfo=document.getElementById('s-hero-info');
-    if(!barsEl)return;
-    barsEl.innerHTML=rows.map((r,i)=>{
-      const v=((r.Views||0)/1e6);
-      const pct=(v/maxV*100).toFixed(1);
-      const col=i===0?'var(--c)':'rgba(0,207,255,.55)';
-      return `<div class="tbar-row${i===0?' active':''}" data-idx="${i}"
-        data-img="${imgV(r)||imgH(r)}" data-imgv="${imgV(r)}"
-        data-title="${cleanT(r.Title)}" data-views="${v.toFixed(1)}"
-        data-sub="${r.Genre||''} · ${(r.Country||'').split('/')[0]} · ${r.Format||''}">
-        <div class="tbar-rk">${String(i+1).padStart(2,'0')}</div>
-        <div class="tbar-info">
-          <div class="tbar-title">${cleanT(r.Title)}</div>
-          <div class="tbar-bw"><div class="tbar-b" data-w="${pct}" style="background:${col};width:0"></div></div>
-        </div>
-        <div>
-          <div class="tbar-val" style="color:${col}">${v.toFixed(1)}M</div>
-          <div class="tbar-sub">views</div>
-        </div>
-      </div>`;
-    }).join('');
-    function setHero(el){
-      document.querySelectorAll('#s-topviz-bars .tbar-row').forEach(r=>r.classList.remove('active'));
-      el.classList.add('active');
-      const img=el.dataset.imgv||el.dataset.img;
-      if(img&&heroBg){heroBg.style.backgroundImage=`url('${img}')`;heroBg.style.opacity='1';}
-      if(heroInfo){
-        heroInfo.innerHTML=`
-          <div class="thi-rk">#${parseInt(el.dataset.idx)+1} · Top Series 2025</div>
-          <div class="thi-tt">${el.dataset.title}</div>
-          <div class="thi-vw" style="color:var(--c)">${el.dataset.views}M</div>
-          <div class="thi-sub">${el.dataset.sub}</div>`;
-      }
-    }
-    barsEl.querySelectorAll('.tbar-row').forEach(row=>{
-      row.addEventListener('mouseenter',()=>setHero(row));
-      row.addEventListener('click',()=>setHero(row));
-    });
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      barsEl.querySelectorAll('.tbar-b').forEach(b=>{b.style.width=b.dataset.w+'%';});
-      const first=barsEl.querySelector('.tbar-row');if(first)setHero(first);
-    }));
-  })();
-
-  /* ── TOP MOVIES (estructura espejo) ── */
-  (function buildMoviesTopViz(){
-    const rows=P.slice(0,10);
-    const maxV=(rows[0]?.Views||1)/1e6;
-    const barsEl=document.getElementById('m-topviz-bars');
-    const heroBg=document.getElementById('m-hero-bg');
-    const heroInfo=document.getElementById('m-hero-info');
-    if(!barsEl)return;
-    barsEl.innerHTML=rows.map((r,i)=>{
-      const v=(r.Views||0)/1e6;
-      const pct=(v/maxV*100).toFixed(1);
-      const col=i===0?'var(--g)':'var(--r)';
-      return `<div class="tbar-row${i===0?' active':''}" data-idx="${i}"
-        data-img="${imgV(r)||imgH(r)}" data-imgv="${imgV(r)}"
-        data-title="${cleanT(r.Title)}" data-views="${v>=100?v.toFixed(0):v.toFixed(1)}"
-        data-sub="${r.Genre||''} · ${(r.Country||'').split('/')[0]}">
-        <div class="tbar-rk" style="color:${col}">${String(i+1).padStart(2,'0')}</div>
-        <div class="tbar-info">
-          <div class="tbar-title">${cleanT(r.Title)}</div>
-          <div class="tbar-bw"><div class="tbar-b" data-w="${pct}" style="background:${col};width:0"></div></div>
-        </div>
-        <div>
-          <div class="tbar-val" style="color:${col}">${v>=100?v.toFixed(0):v.toFixed(1)}M</div>
-          <div class="tbar-sub">views</div>
-        </div>
-      </div>`;
-    }).join('');
-    function setHero(el){
-      document.querySelectorAll('#m-topviz-bars .tbar-row').forEach(r=>r.classList.remove('active'));
-      el.classList.add('active');
-      const img=el.dataset.imgv||el.dataset.img;
-      if(img&&heroBg){heroBg.style.backgroundImage=`url('${img}')`;heroBg.style.opacity='1';}
-      if(heroInfo){
-        const col=parseInt(el.dataset.idx)===0?'var(--g)':'var(--r)';
-        heroInfo.innerHTML=`
-          <div class="thi-rk">#${parseInt(el.dataset.idx)+1} · Top Películas 2025</div>
-          <div class="thi-tt">${el.dataset.title}</div>
-          <div class="thi-vw" style="color:${col}">${el.dataset.views}M</div>
-          <div class="thi-sub">${el.dataset.sub}</div>`;
-      }
-    }
-    barsEl.querySelectorAll('.tbar-row').forEach(row=>{
-      row.addEventListener('mouseenter',()=>setHero(row));
-      row.addEventListener('click',()=>setHero(row));
-    });
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      barsEl.querySelectorAll('.tbar-b').forEach(b=>{b.style.width=b.dataset.w+'%';});
-      const first=barsEl.querySelector('.tbar-row');if(first)setHero(first);
-    }));
-  })();
-
-  /* ── TREEMAP SAGAS — layout tipo infografía ── */
-  function buildTreemap(containerId, rows){
-    const el=document.getElementById(containerId);if(!el)return;
-    const map={};
-    rows.forEach(r=>{
-      const sg=String(r.Saga||'').trim();if(!sg||sg==='nan')return;
-      if(!map[sg])map[sg]={views:0,n:0,imgV:'',imgH:''};
-      map[sg].views+=(r.Views||0)/1e6;map[sg].n++;
-      // Store both orientations separately
-      if(!map[sg].imgV){const v=imgV(r);if(v&&v!=='nan')map[sg].imgV=v;}
-      if(!map[sg].imgH){const h=imgH(r);if(h&&h!=='nan')map[sg].imgH=h;}
-    });
-    const sorted=Object.entries(map).filter(([,v])=>v.n>1).sort((a,b)=>b[1].views-a[1].views).slice(0,10);
-    if(!sorted.length){el.innerHTML='<p style="color:#888;padding:2rem;font-size:.82rem">No hay sagas con múltiples entregas</p>';return;}
-
-    const GAP=3;
-    // Cap width at 500px so height = 750px (fits on screen), ratio 1:1.5
-    const W=Math.min(el.offsetWidth||el.parentElement.offsetWidth||900, 500);
-    const TOTAL_H=Math.round(W*1.5);
-
-    // Centre the treemap in its container
-    el.style.width=W+'px';
-    el.style.height=TOTAL_H+'px';
-    el.style.margin='0 auto';
-
-    const groups=[[sorted[0]]];
-    if(sorted.length>1)groups.push(sorted.slice(1,3));
-    if(sorted.length>3)groups.push(sorted.slice(3,6));
-    if(sorted.length>6)groups.push(sorted.slice(6,10));
-
-    const rowSums=groups.map(g=>g.reduce((s,[,d])=>s+d.views,0));
-    const totalSum=rowSums.reduce((a,b)=>a+b,0);
-    const totalGapV=GAP*(groups.length-1);
-    const rowHeights=rowSums.map(s=>Math.round((s/totalSum)*(TOTAL_H-totalGapV)));
-
-    function cell(name,data,cellW,cellH,heroRow){
-      // Choose image orientation based on cell aspect ratio
-      const isLandscape=cellW>=cellH;
-      const chosenImg=isLandscape
-        ?(data.imgH||data.imgV)
-        :(data.imgV||data.imgH);
-      const bgPos=isLandscape?'center center':'center top';
-      const fs=heroRow?'2.2rem':'1.25rem';
-      const fsn=heroRow?'1rem':'.76rem';
-      const fss=heroRow?'.6rem':'.5rem';
-      const pad=heroRow?'1.2rem 1.3rem':'.65rem .75rem';
-      const bgImg=chosenImg
-        ?`linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.28) 55%, transparent 100%), url('${chosenImg}')`
-        :`linear-gradient(135deg,#1a1a1a,#2d2d2d)`;
-      const flexVal=(cellW/W*100).toFixed(2);
-      return `<div style="flex:${flexVal} 0 0%;height:${cellH}px;background:${bgImg};background-size:cover;background-position:${bgPos};display:flex;flex-direction:column;justify-content:flex-end;padding:${pad};cursor:default;overflow:hidden;position:relative;transition:filter .22s" onmouseenter="this.style.filter='brightness(1.15)'" onmouseleave="this.style.filter=''">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:${fs};line-height:1;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.95)">${data.views.toFixed(0)}M</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:${fsn};color:rgba(255,255,255,.92);letter-spacing:.04em;text-shadow:0 1px 5px rgba(0,0,0,.9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
-        <div style="font-size:${fss};color:rgba(255,255,255,.42);letter-spacing:.08em;text-transform:uppercase;margin-top:.15rem">${data.n} entregas</div>
-      </div>`;
-    }
-
-    el.style.display='flex';
-    el.style.flexDirection='column';
-    el.style.gap=GAP+'px';
-
-    el.innerHTML=groups.map((group,gi)=>{
-      const rowH=rowHeights[gi];
-      const rowSum=rowSums[gi];
-      const hero=gi===0;
-      // Estimate each cell's pixel width proportionally
-      const cells=group.map(([name,data])=>{
-        const cellW=Math.round((data.views/rowSum)*(W-(GAP*(group.length-1))));
-        return cell(name,data,cellW,rowH,hero);
-      }).join('');
-      return `<div style="display:flex;flex:0 0 ${rowH}px;height:${rowH}px;gap:${GAP}px">${cells}</div>`;
-    }).join('');
-  }
-  buildTreemap('treemap-movies',P);
-  buildTreemap('treemap-series',S);
-
-  /* ── COUNTRY RANKING ── */
-  (function buildCountryRank(){
-    const FLAGS={'USA':'🇺🇸','UK':'🇬🇧','South Korea':'🇰🇷','Japan':'🇯🇵','Spain':'🇪🇸','Brazil':'🇧🇷','France':'🇫🇷','Mexico':'🇲🇽','India':'🇮🇳','Germany':'🇩🇪','Australia':'🇦🇺','Canada':'🇨🇦','Italy':'🇮🇹','Turkey':'🇹🇷','Denmark':'🇩🇰','Sweden':'🇸🇪','Argentina':'🇦🇷','Norway':'🇳🇴','Thailand':'🇹🇭','Philippines':'🇵🇭','Colombia':'🇨🇴','Poland':'🇵🇱','Belgium':'🇧🇪','Netherlands':'🇳🇱','Finland':'🇫🇮','New Zealand':'🇳🇿','Nigeria':'🇳🇬','South Africa':'🇿🇦'};
-    const COLORS={'USA':'var(--r)','UK':'#4488ff','South Korea':'#ff6b9d','Japan':'#ff8c42','default':'#888'};
-    const cnt={};
-    [...S,...P].forEach(r=>{const co=(r.Country||'').split('/')[0].trim();if(co&&co!=='nan')cnt[co]=(cnt[co]||0)+1;});
-    const sorted=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,10);
-    const max=sorted[0][1];
-    const el=document.getElementById('wmap-rank');if(!el)return;
-    el.innerHTML=sorted.map(([name,count],i)=>{
-      const flag=FLAGS[name]||'🌐';
-      const col=COLORS[name]||COLORS.default;
-      const pct=(count/max*100).toFixed(1);
-      return `<div class="cri${i===0?' top1':''}">
-        <div class="cri-rk">${String(i+1).padStart(2,'0')}</div>
-        <div class="cri-flag">${flag}</div>
-        <div class="cri-info">
-          <div class="cri-name">${name}</div>
-          <div class="cri-bw"><div class="cri-b" data-w="${pct}" style="background:${col}"></div></div>
-        </div>
-        <div class="cri-nums">
-          <div class="cri-count" style="color:${col}">${count}</div>
-          <div class="cri-sub">títulos</div>
-        </div>
-      </div>`;
-    }).join('');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      el.querySelectorAll('.cri-b').forEach(b=>{b.style.width=b.dataset.w+'%';});
-    }));
-  })();
-  
-  /* ── WORLD MAP ── */
-  (function buildMap(){
-    const allC={};
-    [...S,...P].forEach(r=>{
-      let co=(r.Country||'').split('/')[0].trim();
-      if(co==='USA')co='United States';else if(co==='UK')co='United Kingdom';
-      if(co&&co!=='nan')allC[co]=(allC[co]||0)+1;
-    });
-    if(typeof Plotly==='undefined')return;
-    Plotly.newPlot('wmap',[{type:'choropleth',locationmode:'country names',
-      locations:Object.keys(allC),z:Object.values(allC),
-      colorscale:[[0,'#f8f8f8'],[.03,'#ffd5d5'],[.12,'#ff9999'],[.3,'#cc2222'],[.65,'#990000'],[1,'#E50914']],
-      zmin:0,marker:{line:{color:'rgba(200,200,200,.4)',width:.5}},
-      colorbar:{title:'Títulos',tickfont:{color:'#888',size:9},bgcolor:'rgba(255,255,255,.9)',bordercolor:'rgba(0,0,0,.1)'}
-    }],{
-      geo:{bgcolor:'transparent',showcoastlines:false,showland:true,landcolor:'#f0f0f0',showframe:false,
-        projection:{type:'natural earth'},showcountries:true,countrycolor:'rgba(0,0,0,.1)'},
-      paper_bgcolor:'transparent',plot_bgcolor:'transparent',margin:{t:0,b:0,l:0,r:0}
-    },{displayModeBar:false,responsive:true});
-  })();
-
-  /* ── GENRES ── */
-  function genreCounts(rows){const m={};rows.forEach(r=>{const g=(r.Genre||'').split('/')[0].trim();if(g&&g!=='nan')m[g]=(m[g]||0)+1;});return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
-  function genreRepImg(rows,genre){const r=rows.find(x=>(x.Genre||'').split('/')[0].trim()===genre&&imgV(x));return r?imgV(r):'';}
-  function buildGenreBars(containerId, rows, colorFn){
-    const el=document.getElementById(containerId);if(!el)return;
-    const data=genreCounts(rows).slice(0,8);
-    const max=data[0][1];
-    el.innerHTML=data.map(([name,count],i)=>{
-      const img=genreRepImg(rows,name);
-      const col=colorFn(i);
-      const pct=(count/max*100).toFixed(1);
-      return `<div class="gbi">
-        ${img?`<div class="gbi-bg" style="background-image:url('${img}')"></div><img class="gbi-thumb" src="${img}" onerror="this.style.display='none'" loading="lazy">`:`<div class="gbi-nothumb"></div>`}
-        <div class="gbi-info">
-          <div class="gbi-name">${name}</div>
-          <div class="gbi-bw"><div class="gbi-b" data-w="${pct}" style="background:${col}"></div></div>
-        </div>
-        <div class="gbi-right">
-          <div class="gbi-count" style="color:${col}">${count}</div>
-          <div class="gbi-lbl">títulos</div>
-        </div>
-      </div>`;
-    }).join('');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      el.querySelectorAll('.gbi-b').forEach(b=>{b.style.width=b.dataset.w+'%';});
-    }));
-  }
-  buildGenreBars('g-s-bars',S,i=>`hsl(195,${80-i*4}%,${65-i*3}%)`);
-  buildGenreBars('g-m-bars',P,i=>`hsl(0,${80-i*4}%,${58-i*2}%)`);
-
-  /* ── WAFFLE ── */
-  const wfl=document.getElementById('wfl');const wt=document.getElementById('wt');
-  const pSorted=[...P].sort((a,b)=>Number(isAnim(b))-Number(isAnim(a)));
-  wfl.innerHTML=pSorted.map((r,i)=>{
-    const a=isAnim(r);const iv=imgV(r);
-    return `<div class="wc ${a?'a':'na'}" data-t="${cleanT(r.Title)}" data-v="${((r.Views||0)/1e6).toFixed(1)}" data-i="${iv}" data-ih="${imgH(r)}" data-g="${r.Genre||''}" data-a="${a}" data-co="${(r.Country||'').split('/')[0]}" data-sg="${(r.Saga||'').trim()}" data-rk="${i+1}"></div>`;
-  }).join('');
-  wfl.querySelectorAll('.wc').forEach(c=>{
-    c.addEventListener('mouseenter',()=>{
-      const a=c.dataset.a==='true';const iv=c.dataset.i;
-      const ih=c.dataset.ih;const sg=c.dataset.sg;const co=c.dataset.co;const rk=c.dataset.rk;
-      wt.innerHTML=`
-        ${ih?`<img src="${ih}" style="width:100%;height:160px;object-fit:cover;border-radius:10px 10px 0 0;flex-shrink:0" onerror="this.style.display='none'">`:
-          `<div style="width:100%;height:100px;background:${a?'rgba(229,9,20,.08)':'rgba(128,128,128,.1)'};border-radius:10px 10px 0 0;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-             <span style="font-size:2rem">${a?'🎬':'🎥'}</span></div>`}
-        <div style="padding:.9rem 1rem">
-          <div style="font-size:.58rem;color:${a?'var(--r)':'var(--text3)'};letter-spacing:.14em;text-transform:uppercase;margin-bottom:.3rem;font-weight:700">${a?'🎨 Animación':'📽 Acción Real'} · #${rk}</div>
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);line-height:1.25;margin-bottom:.4rem">${c.dataset.t}</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:${a?'var(--r)':'var(--text)'};line-height:1;margin-bottom:.3rem">${c.dataset.v}M <span style="font-size:.8rem;color:var(--text3);font-family:'DM Sans',sans-serif">views</span></div>
-          <div style="font-size:.68rem;color:var(--text3);line-height:1.6">${c.dataset.g}${co?' · '+co:''}${sg&&sg!=='nan'?' · '+sg:''}</div>
-        </div>`;
-    });
-  });
-
-  /* ── SPAIN ── */
-  const spM=P.filter(r=>(r.Country||'').includes('Spain'));
-  const spS=S.filter(r=>(r.Country||'').includes('Spain'));
-  
-  const podEl=document.getElementById('sp-podium');
-  if(podEl){
-    if(spM.length){
-      const medals=['gold','silver','bronze'];
-      const medalIco=['🥇','🥈','🥉'];
-      podEl.innerHTML=spM.slice(0,3).map((r,i)=>{
-        const iv=imgV(r);
-        const v=((r.Views||0)/1e6).toFixed(1);
-        return `<div class="sp-pod-item ${medals[i]||''}">
-          <div class="sp-pod-medal">${medalIco[i]||''}</div>
-          <div class="sp-pod-card">
-            ${iv?`<div class="sp-pod-bg" style="background-image:url('${iv}')"></div>`:'<div class="sp-pod-bg" style="background:linear-gradient(135deg,#1a0a00,#3d1500)"></div>'}
-            <div class="sp-pod-ov">
-              <div style="font-size:.58rem;color:var(--sp);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.15rem">${r.Genre||''}</div>
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:1.15rem;color:#fff;line-height:1.1;margin-bottom:.25rem">${cleanT(r.Title)}</div>
-              <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--sp);line-height:1">${v}M</div>
-            </div>
-          </div>
-          <div class="sp-pod-step"><span style="font-size:.6rem;letter-spacing:.1em;color:var(--text3)">#${i+1}</span></div>
-        </div>`;
-      }).join('');
-    }
-  }
-  
-  const spSbarEl=document.getElementById('sp-sbar');
-  if(spSbarEl&&spS.length){
-    const maxV=(spS[0]?.Views||1)/1e6;
-    spSbarEl.innerHTML=spS.map((r,i)=>{
-      const v=((r.Views||0)/1e6);
-      const pct=(v/maxV*100).toFixed(1);
-      const iv=imgV(r);
-      return `<div class="sp-sbar-row">
-        ${iv?`<img src="${iv}" loading="lazy" style="width:40px;height:60px;border-radius:6px;object-fit:cover;flex-shrink:0;border:1px solid rgba(0,0,0,.1)" onerror="this.style.display='none'">`:`<div style="width:40px;height:60px;border-radius:6px;background:rgba(255,107,53,.1);flex-shrink:0"></div>`}
-        <div class="sp-sbar-info">
-          <div class="sp-sbar-title">${cleanT(r.Title)}</div>
-          <div style="font-size:.7rem;color:var(--text3);margin-bottom:.25rem">${r.Genre||''}</div>
-          <div class="sp-sbar-bw"><div class="sp-sbar-b" data-w="${pct}" style="width:0"></div></div>
-        </div>
-        <div class="sp-sbar-val">${v.toFixed(1)}M</div>
-      </div>`;
-    }).join('');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      spSbarEl.querySelectorAll('.sp-sbar-b').forEach(b=>{b.style.width=b.dataset.w+'%';});
-    }));
-  }
-  
-  /* Casa de Papel — Gráfico de LÍNEAS con puntos */
-  (function buildCasaDePapel(){
-    const cdp=stot.filter(r=>(r.Title||'').toLowerCase().includes('casa de papel')).sort((a,b)=>{
-      const ma=(a.Title||'').match(/season\s*(\d+)|temporada\s*(\d+)|\bs(\d+)\b/i);
-      const mb=(b.Title||'').match(/season\s*(\d+)|temporada\s*(\d+)|\bs(\d+)\b/i);
-      const na=ma?parseInt(ma[1]||ma[2]||ma[3]):99;
-      const nb=mb?parseInt(mb[1]||mb[2]||mb[3]):99;
-      return na-nb;
-    });
-    if(!cdp.length)return;
-    const labels=cdp.map(r=>{
-      const m=(r.Title||'').match(/season\s*(\d+)/i);
-      return m?'T'+m[1]:cleanT(r.Title||'');
-    });
-    const data=cdp.map(r=>(r.Views||0)/1e6);
-    const el=document.getElementById('c-cdp');if(!el)return;
-    destroyC('c-cdp');
-    CH['c-cdp']=new Chart(el,{type:'line',
-      data:{labels,datasets:[{
-        data,
-        borderColor:'var(--r)',
-        backgroundColor:'rgba(229,9,20,.1)',
-        borderWidth:3,
-        pointBackgroundColor:'var(--r)',
-        pointBorderColor:'#fff',
-        pointBorderWidth:2,
-        pointRadius:6,
-        pointHoverRadius:9,
-        tension:.3,
-        fill:true
-      }]},
-      options:{responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.raw.toFixed(1)}M views`}}},
-        scales:{
-          x:{grid:{display:false},ticks:{color:'#999',font:{size:11}}},
-          y:{grid:{color:'rgba(0,0,0,.06)'},ticks:{color:'#aaa',callback:v=>v+'M',font:{size:10}},beginAtZero:true}
-        },
-        animation:{duration:1200,easing:'easeOutQuart'}}});
-  })();
-
-  /* ── SEASONS ── */
-  let SEAS={};
-  (function buildSeasData(){
-    const sagaByTitle={};
-    S.forEach(r=>{
-      const sg=String(r.Saga||'').trim();
-      const ct=cleanT(r.Title);
-      if(sg&&sg!=='nan'){sagaByTitle[ct]=sg;sagaByTitle[r.Title]=sg;}
-    });
-    ['Black Mirror: Season 1','Black Mirror: Season 2','Black Mirror: Season 3','Black Mirror: Season 4','Black Mirror: Season 5','Black Mirror: Season 6','Black Mirror: Season 7'].forEach(t=>{
-      sagaByTitle[t]='Black Mirror';sagaByTitle[cleanT(t)]='Black Mirror';
-    });
-    const groups={};
-    stot.forEach(r=>{
-      const title=String(r.Title||'');
-      const ct=cleanT(title);
-      const sg=sagaByTitle[title]||sagaByTitle[ct]||'';
-      if(!sg)return;
-      let seas=1;
-      const m1=title.match(/Season\s*(\d+)/i);if(m1)seas=parseInt(m1[1]);
-      else{const m2=title.split(' //')[0].trim().match(/\b(\d+)\s*$/);if(m2)seas=parseInt(m2[1]);}
-      if(!groups[sg])groups[sg]=[];
-      if(!groups[sg].find(x=>x.s===seas))
-        groups[sg].push({s:seas,v:(r.Views||0)/1e6});
-    });
-    Object.entries(groups).forEach(([k,arr])=>{
-      if(arr.length>=2){
-        const sorted=arr.sort((a,b)=>a.s-b.s);
-        SEAS[k]={ls:sorted.map(x=>'T'+x.s),d:sorted.map(x=>parseFloat(x.v.toFixed(1)))};
-      }
-    });
-    if(!SEAS['Black Mirror']||SEAS['Black Mirror'].d.length<5)
-      SEAS['Black Mirror']={ls:['T1','T2','T3','T4','T5','T6','T7'],d:[9.2,6.3,5.6,5.5,5.2,7.8,36.3]};
-  })();
-
-  let activeSea='Squid Game';
-  function buildSeaBtns(wid,cid,sid){
-    const w=document.getElementById(wid);if(!w)return;
-    w.innerHTML=Object.keys(SEAS).map(k=>{
-      const col=SCOL[k]||'#777';const on=k===activeSea;
-      return `<button class="sbtn${on?' on':''}" style="${on?`color:${col};border-color:${col}`:''}" onclick="selSea('${k.replace(/'/g,"\\'")}','${wid}','${cid}','${sid}')">${k}</button>`;
-    }).join('');
-  }
-  window.selSea=function(key,wid,cid,sid){
-    activeSea=key;const d=SEAS[key];if(!d)return;
-    const col=SCOL[key]||'#777';
-    lineC(cid,key,d.ls,d.d,col);
-    buildSeaBtns(wid,cid,sid);
-    if(sid&&sid!=='null'){
-      const el=document.getElementById(sid);if(!el)return;
-      const max=Math.max(...d.d),mi=d.d.indexOf(max);
-      const last=d.d[d.d.length-1],prev=d.d.length>1?d.d[d.d.length-2]:null;
-      const ch=prev!==null?((last-prev)/prev*100).toFixed(0):null;
-      el.innerHTML=`<div style="display:flex;gap:1.5rem;flex-wrap:wrap">
-        <div><div style="font-size:.58rem;color:var(--text);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.2rem">Temporada más vista</div><div style="font-family:'Bebas Neue',sans-serif;font-size:1.55rem;color:${col}">${d.ls[mi]} · ${max.toFixed(1)}M</div></div>
-        ${ch!==null?`<div><div style="font-size:.58rem;color:var(--text);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.2rem">Última vs anterior</div><div style="font-family:'Bebas Neue',sans-serif;font-size:1.55rem;color:${last>=prev?'var(--gr)':'var(--r)'}">${last>=prev?'+':''}${ch}%</div></div>`:''}
-        <div style="flex:1;min-width:100px"><div style="font-size:.58rem;color:var(--text);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.18rem">Temporadas en datos</div><p style="font-size:.78rem;color:var(--text2)">${d.ls.length} en el catálogo</p></div>
-      </div>`;
-    }
-  };
-  buildSeaBtns('sb1','c-sea','ss1');
-  buildSeaBtns('sb2','c-sea2','null');
-  selSea('Squid Game','sb1','c-sea','ss1');
-  selSea('Squid Game','sb2','c-sea2','null');
-
-  lineC('c-bm','Black Mirror',['T1','T2','T3','T4','T5','T6','T7'],[9.2,6.3,5.6,5.5,5.2,7.8,36.3],'#e8e8e8');
-
-  /* ── KIDS ── */
-  const kids=[
-    {name:"Peppa Pig",col:'#FF9FBF'},{name:"Gabby's Dollhouse",col:'#FFD93D'},
-    {name:'Ms. Rachel',col:'#4CC9F0'},{name:'Lottie Dottie Chicken',col:'#FB923C'},
-    {name:'Masha and the Bear',col:'#A78BFA'},{name:'CoComelon Lane',col:'#FF8FAB'},{name:'Little Angel',col:'#60A5FA'},
-    {name:'Bebefinn',col:'#FCD34D'},
-  ];
-  const sagaMap={};S.forEach(r=>{const sg=String(r.Saga||'').trim();if(sg&&sg!=='nan')sagaMap[sg]=(sagaMap[sg]||0)+(r.Views||0)/1e6;});
-  const kv=kids.map(k=>sagaMap[k.name]||0);
-  const kmx=Math.max(...kv);
-  const kgEl=document.getElementById('kids-grid');
-  if(kgEl){
-    kgEl.innerHTML=kids.map((k,i)=>{
-      const v=kv[i];const pct=(v/kmx*100).toFixed(0);
-      return `<div class="kids-card">
-        <div class="kids-card-name">${k.name}</div>
-        <div class="kids-card-bar-wrap"><div class="kids-card-bar" data-w="${pct}" style="background:${k.col};width:0"></div></div>
-        <div class="kids-card-val" style="color:${k.col}">${v.toFixed(0)}M</div>
-        <div class="kids-card-sub">visualizaciones</div>
-      </div>`;
-    }).join('');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
-      kgEl.querySelectorAll('.kids-card-bar').forEach(b=>{b.style.width=b.dataset.w+'%';});
-    }));
-  }
-
-  /* ── PODIO ── */
-  const podio=document.getElementById('podio');
-  [{rk:'01',t:'KPop Demon Hunters',v:'518M',col:'var(--g)',sub:'Película · USA · Animación Musical',pct:100,img:imgH(P[0])||imgV(P[0])},
-   {rk:'02',t:'Adolescence',v:'165M',col:'var(--c)',sub:'Limited Series · Reino Unido · Drama',pct:32,img:imgH(S[0])||imgV(S[0])},
-   {rk:'03',t:'Squid Game S3',v:'150M',col:'var(--r)',sub:'Serie · Corea del Sur · Thriller',pct:29,img:imgH(S[1])||imgV(S[1])}
-  ].forEach(p=>{
-    const d=document.createElement('div');d.className='pod';d.style.borderLeft=`3px solid ${p.col}`;
-    d.innerHTML=`<div class="podb" style="${p.img?`background-image:url('${p.img}')`:''};background-color:#0d0d0d"></div>
-    <div class="podc">
-      <div class="prk2" style="color:${p.col}">${p.rk}</div>
-      <div style="flex:1">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:#fff;line-height:1;margin-bottom:.3rem">${p.t}</div>
-        <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:.6rem">${p.sub}</div>
-        <div class="pbar" style="width:${p.pct}%;background:${p.col}"></div>
-      </div>
-      <div style="text-align:right;flex-shrink:0">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:${p.col};line-height:1">${p.v}</div>
-        <div style="font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase">visualizaciones</div>
-      </div>
-    </div>`;
-    podio.appendChild(d);
-  });
-
-  /* ── SEARCH ── */
-  const SDB=[
-    ...ptot.map(r=>({t:r.Title||'',tp:'P',v:(r.Views||0)/1e6,h:r['Hours Viewed']||0})),
-    ...stot.map(r=>({t:cleanT(r.Title||''),tp:'S',v:(r.Views||0)/1e6,h:r['Hours Viewed']||0}))
-  ].filter(r=>r.v>0).sort((a,b)=>b.v-a.v);
-  function renderSearch(res,tbid,infoid,max=120){
-    const tb=document.getElementById(tbid);const info=document.getElementById(infoid);if(!tb)return;
-    const sl=res.slice(0,max);
-    tb.innerHTML=sl.map(r=>`<tr><td style="font-weight:500;max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.t}</td><td><span class="bm ${r.tp==='P'?'bmp':'bms'}">${r.tp==='P'?'Película':'Serie'}</span></td><td style="text-align:right;font-weight:700">${r.v.toFixed(2)}M</td><td style="text-align:right;color:var(--text2)">${fmtH(r.h)}</td></tr>`).join('');
-    if(info)info.textContent=`${sl.length} de ${res.length} resultados`;
-  }
-  function bindSearch(inputId,tbid,infoid){
-    const inp=document.getElementById(inputId);if(!inp)return;
-    let timer;inp.addEventListener('input',()=>{
-      clearTimeout(timer);timer=setTimeout(()=>{const q=inp.value.toLowerCase().trim();
-        renderSearch(q?SDB.filter(r=>r.t.toLowerCase().includes(q)):SDB,tbid,infoid);},180);
-    });
-  }
-  renderSearch(SDB,'s-body','s-info');
-  renderSearch(SDB,'sd-body','sd-info');
-  bindSearch('s-in','s-body','s-info');
-  bindSearch('sd-in','sd-body','sd-info');
-
-  /* ── DASHBOARD ── */
-  let DF={c:'all',g:'all',a:'all',f:'all'};
-  (function buildFilters(){
-    const cs=['USA','UK','South Korea','Spain','Japan','France','Brazil','Mexico'];
-    const gs=['Drama','Kids','Thriller','Comedy','Sci-Fi','Action','Romance','Family','Documentary','Anime'];
-    const btn=(key,val,lbl)=>`<button class="fp${val==='all'?' on':''}" onclick="setF('${key}','${val}',this)">${lbl}</button>`;
-    document.getElementById('f-c').innerHTML=btn('c','all','Todos')+cs.map(x=>btn('c',x,x)).join('');
-    document.getElementById('f-g').innerHTML=btn('g','all','Todos')+gs.map(x=>btn('g',x,x)).join('');
-    document.getElementById('f-a').innerHTML=btn('a','all','Todos')+'<button class="fp" onclick="setF(\'a\',\'yes\',this)">Animación</button><button class="fp" onclick="setF(\'a\',\'no\',this)">Acción Real</button>';
-    document.getElementById('f-f').innerHTML=btn('f','all','Todos')+'<button class="fp" onclick="setF(\'f\',\'Series\',this)">Series</button><button class="fp" onclick="setF(\'f\',\'Limited Series\',this)">Limited Series</button>';
-  })();
-  window.setF=function(k,v,b){DF[k]=v;b.parentElement.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));b.classList.add('on');applyF();};
-  window.rF=function(){DF={c:'all',g:'all',a:'all',f:'all'};document.querySelectorAll('.fr').forEach(row=>row.querySelectorAll('.fp').forEach((p,i)=>p.classList.toggle('on',i===0)));applyF();};
-  function applyF(){
-    const fS=S.filter(r=>{
-      if(DF.c!=='all'&&!(r.Country||'').includes(DF.c))return false;
-      if(DF.g!=='all'&&!(r.Genre||'').includes(DF.g))return false;
-      if(DF.f!=='all'&&r.Format!==DF.f)return false;
-      return true;
-    }).sort((a,b)=>(b.Views||0)-(a.Views||0));
-    const fP=P.filter(r=>{
-      if(DF.c!=='all'&&!(r.Country||'').includes(DF.c))return false;
-      if(DF.g!=='all'&&!(r.Genre||'').includes(DF.g))return false;
-      if(DF.a==='yes'&&!isAnim(r))return false;if(DF.a==='no'&&isAnim(r))return false;
-      return true;
-    }).sort((a,b)=>(b.Views||0)-(a.Views||0));
-
-    if(fP[0]){document.getElementById('db-mv').textContent=((fP[0].Views||0)/1e6).toFixed(0)+'M';document.getElementById('db-mt').textContent=cleanT(fP[0].Title);}
-    if(fS[0]){document.getElementById('db-sv').textContent=((fS[0].Views||0)/1e6).toFixed(0)+'M';document.getElementById('db-st').textContent=cleanT(fS[0].Title);}
-    document.getElementById('db-ft').textContent=(fS.length+fP.length).toString();
-
-    // ── TOP SERIES ranking list ──
-    const maxVS=(fS[0]?.Views||1)/1e6;
-    document.getElementById('db-ls').innerHTML=fS.slice(0,12).map((r,i)=>{
-      const v=(r.Views||0)/1e6;
-      return `<div class="dli">
-        <div class="dlr">${i+1}</div>
-        <div class="dlbw">
-          <div class="dlt">${cleanT(r.Title).substring(0,38)}</div>
-          <div class="dlb" style="width:${v/maxVS*100}%;background:var(--c)"></div>
-        </div>
-        <div class="dlv" style="color:var(--c)">${v.toFixed(1)}M</div>
-      </div>`;
-    }).join('');
-
-    // ── TOP PELÍCULAS ranking list ──
-    const maxVP=(fP[0]?.Views||1)/1e6;
-    const pmEl=document.getElementById('db-pm-rank');
-    if(pmEl) pmEl.innerHTML=fP.slice(0,12).map((r,i)=>{
-      const v=(r.Views||0)/1e6;
-      return `<div class="dli">
-        <div class="dlr">${i+1}</div>
-        <div class="dlbw">
-          <div class="dlt">${cleanT(r.Title).substring(0,38)}</div>
-          <div class="dlb" style="width:${v/maxVP*100}%;background:var(--r)"></div>
-        </div>
-        <div class="dlv" style="color:var(--r)">${v.toFixed(1)}M</div>
-      </div>`;
-    }).join('');
-
-    // ── PAÍSES & GÉNEROS (bar charts) ──
-    function cnt(rows,field){const m={};rows.forEach(r=>{const v=(r[field]||'').split('/')[0].trim();if(v&&v!=='nan')m[v]=(m[v]||0)+1;});return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
-    const cs=cnt(fS,'Country').slice(0,8);hBarC('db-cs',cs.map(x=>x[0]),cs.map(x=>x[1]),cs.map((_,i)=>i===0?'#00CFFF':'#00CFFF44'),12,10);
-    const gs2=cnt(fS,'Genre').slice(0,7);hBarC('db-gs',gs2.map(x=>x[0]),gs2.map(x=>x[1]),gs2.map((_,i)=>`hsl(195,${78-i*7}%,${55-i*4}%)`),12,10);
-    const gm2=cnt(fP,'Genre').slice(0,7);hBarC('db-gm',gm2.map(x=>x[0]),gm2.map(x=>x[1]),gm2.map((_,i)=>`hsl(0,${78-i*7}%,${52-i*3}%)`),12,10);
-
-    // ── SAGAS (bar charts) ──
-    function sagaTotals(rows){const m={};rows.forEach(r=>{const sg=String(r.Saga||'').trim();if(sg&&sg!=='nan')m[sg]=(m[sg]||0)+(r.Views||0)/1e6;});return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
-    const ss=sagaTotals(fS).slice(0,8);hBarC('db-ss',ss.map(x=>x[0].substring(0,22)),ss.map(x=>x[1]),ss.map((_,i)=>i===0?'#00CFFF':'#00CFFF55'),13,10);
-    const sm=sagaTotals(fP).slice(0,8);hBarC('db-sm',sm.map(x=>x[0].substring(0,22)),sm.map(x=>x[1]),sm.map((_,i)=>i===0?'#E50914':'#E5091455'),13,10);
-  }
-  applyF();
-}
-
-/* ══════════════════════════════════════════
-   LOAD CSVs
-══════════════════════════════════════════ */
-async function load(){
-  try {
-    document.getElementById('lt').textContent = 'Cargando datos…';
-    const [s200,p200,stot,ptot] = await Promise.all([
-      parseCSV(CSV_FILES.s200),
-      parseCSV(CSV_FILES.p200),
-      parseCSV(CSV_FILES.stot),
-      parseCSV(CSV_FILES.ptot)
-    ]);
-    buildAll(s200, p200, stot, ptot);
-  } catch(e) {
-    document.getElementById('lt').textContent = 'Coloca los 4 CSV junto al HTML, o súbelos aquí:';
-    document.getElementById('uu').classList.add('on');
-  }
-}
-
-document.getElementById('cfi').addEventListener('change', async e => {
-  const files = Array.from(e.target.files);
-  const msg = document.getElementById('um');
-  try {
-    const get = k => files.find(f => f.name.toLowerCase().includes(k.toLowerCase()));
-    const fs200 = get('TOP_200_SERIES');
-    const fp200 = get('TOP_200_PELIS');
-    const fstot = get('Series_Netflix');
-    const fptot = get('Pelis_Netflix');
-    if(!fs200||!fp200||!fstot||!fptot) throw new Error('Faltan archivos. Necesito los 4 CSV.');
-    msg.textContent = 'Procesando…';
-    const [s200,p200,stot,ptot] = await Promise.all([parseFile(fs200),parseFile(fp200),parseFile(fstot),parseFile(fptot)]);
-    buildAll(s200, p200, stot, ptot);
-  } catch(err) { msg.textContent = err.message; }
+// 1. Client % chart
+new Chart(document.getElementById('chartClientPct'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025', '2026*'],
+    datasets: [
+      { label: 'Fidelizado', data: [27.7, 27.0, 24.5, 31.7], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [72.3, 73.0, 75.5, 68.3], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, max: 100, ticks: { callback: v => v+'%' } } } }
 });
 
-window.addEventListener('load', load);
+// 2. Ticket % chart
+new Chart(document.getElementById('chartTicketPct'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025', '2026*'],
+    datasets: [
+      { label: 'Fidelizado', data: [42.9, 40.8, 35.9, 36.9], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [57.1, 59.2, 64.1, 63.1], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, max: 100, ticks: { callback: v => v+'%' } } } }
+});
+
+// Monthly % fidelizados
+new Chart(document.getElementById('chartMonthlyPct'), {
+  type: 'line',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    datasets: [
+      { label: '2023', data: [35.3,45.4,52.4,47.2,43.3,49.1,40.1,38.1,45.4,46.8,46.9,39.2], borderColor: '#ff6b35', backgroundColor: 'rgba(255,107,53,0.1)', fill: false, tension: 0.3 },
+      { label: '2024', data: [45.3,49.9,43.9,51.5,52.4,42.9,40.6,38.1,41.3,42.7,33.7,31.7], borderColor: '#4ecdc4', backgroundColor: 'rgba(78,205,196,0.1)', fill: false, tension: 0.3 },
+      { label: '2025', data: [34.3,41.1,46.2,44.8,39.1,34.6,33.1,34.1,31.9,42.3,40.6,31.3], borderColor: '#ffd166', backgroundColor: 'rgba(255,209,102,0.1)', fill: false, tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { min: 25, max: 55, ticks: { callback: v => v+'%' } } }
+  }
+});
+
+// Fid clients active
+new Chart(document.getElementById('chartFidClients'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025'],
+    datasets: [{ label: 'Clientes fidelizados activos', data: [16373, 12970, 14034], backgroundColor: COLORS.accent, borderRadius: 6 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+});
+
+// Revenue stacked
+new Chart(document.getElementById('chartRevenue'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025'],
+    datasets: [
+      { label: 'Fidelizado', data: [867358, 656855, 668240], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [1438498, 1143089, 1479433], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '€'+(v/1000).toFixed(0)+'K' } } } }
+});
+
+// Plan distribution 2025 (doughnut)
+new Chart(document.getElementById('chartPlanDist'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PLANET', 'FAMILIA', 'PLANETJOVE', 'PLANGOLD'],
+    datasets: [{ data: [6479, 5104, 1833, 628], backgroundColor: [COLORS.planet, COLORS.familia, COLORS.jove, COLORS.gold], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+});
+
+// Plan revenue by year
+new Chart(document.getElementById('chartPlanRevenue'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025'],
+    datasets: [
+      { label: 'PLANET', data: [394377, 282304, 291099], backgroundColor: COLORS.planet, borderRadius: 3 },
+      { label: 'FAMILIA', data: [354093, 280080, 264563], backgroundColor: COLORS.familia, borderRadius: 3 },
+      { label: 'PLANETJOVE', data: [69328, 54648, 77050], backgroundColor: COLORS.jove, borderRadius: 3 },
+      { label: 'PLANGOLD', data: [49560, 39823, 35528], backgroundColor: COLORS.gold, borderRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { ticks: { callback: v => '€'+(v/1000).toFixed(0)+'K' } } } }
+});
+
+// Plan price per ticket
+new Chart(document.getElementById('chartPlanPrice'), {
+  type: 'bar',
+  data: {
+    labels: ['PLANGOLD', 'PLANET', 'FAMILIA', 'PLANETJOVE', 'NO FIDELIZADO'],
+    datasets: [
+      { label: '2023', data: [7.04, 7.88, 8.01, 8.08, 9.83], backgroundColor: 'rgba(255,107,53,0.7)', borderRadius: 3 },
+      { label: '2024', data: [6.60, 7.90, 8.05, 8.10, 9.47], backgroundColor: 'rgba(78,205,196,0.7)', borderRadius: 3 },
+      { label: '2025', data: [6.78, 8.45, 8.39, 8.86, 10.38], backgroundColor: 'rgba(255,209,102,0.7)', borderRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { beginAtZero: false, min: 5, ticks: { callback: v => '€'+v } } } }
+});
+
+// Tickets per client
+new Chart(document.getElementById('chartPlanTicketsClient'), {
+  type: 'bar',
+  data: {
+    labels: ['PLANGOLD', 'FAMILIA', 'PLANET', 'PLANETJOVE', 'NO FID.'],
+    datasets: [
+      { label: '2023', data: [7.65, 7.23, 6.41, 5.55, 3.43], backgroundColor: 'rgba(255,107,53,0.7)', borderRadius: 3 },
+      { label: '2024', data: [8.43, 6.76, 6.17, 5.09, 3.44], backgroundColor: 'rgba(78,205,196,0.7)', borderRadius: 3 },
+      { label: '2025', data: [8.35, 6.18, 5.31, 4.74, 3.30], backgroundColor: 'rgba(255,209,102,0.7)', borderRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Frequency distribution
+new Chart(document.getElementById('chartFreqDist'), {
+  type: 'bar',
+  data: {
+    labels: ['1 visita', '2-4 visitas', '5-9 visitas', '10+ visitas'],
+    datasets: [
+      { label: 'Fidelizado', data: [58, 28.5, 9.5, 3.3], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [82, 16, 1.2, 0.2], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { ticks: { callback: v => v+'%' } } } }
+});
+
+// Retention flow
+new Chart(document.getElementById('chartRetention'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025'],
+    datasets: [
+      { label: 'Retenidos', data: [null, 6898, 5851], backgroundColor: COLORS.positive, borderRadius: 4 },
+      { label: 'Nuevos', data: [null, 6072, 8183], backgroundColor: COLORS.planet, borderRadius: 4 },
+      { label: 'Perdidos', data: [null, -9475, -7119], backgroundColor: COLORS.negative, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { ticks: { callback: v => Math.abs(v).toLocaleString() } } }
+  }
+});
+
+// Retention by plan
+new Chart(document.getElementById('chartRetPlan'), {
+  type: 'bar',
+  data: {
+    labels: ['PLANGOLD', 'FAMILIA', 'PLANET', 'PLANETJOVE'],
+    datasets: [
+      { label: '2023→2024', data: [49.3, 44.6, 41.3, 31.9], backgroundColor: 'rgba(255,107,53,0.7)', borderRadius: 4 },
+      { label: '2024→2025', data: [49.9, 46.0, 44.8, 37.2], backgroundColor: 'rgba(78,205,196,0.7)', borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { max: 60, ticks: { callback: v => v+'%' } } } }
+});
+
+// CLV proxy
+new Chart(document.getElementById('chartCLV'), {
+  type: 'bar',
+  data: {
+    labels: ['1 año activo', '2 años activos', '3 años activos'],
+    datasets: [
+      { label: 'Revenue medio acum. (€)', data: [32.87, 90.33, 243.27], backgroundColor: [COLORS.nofid, COLORS.accent, COLORS.gold], borderRadius: 6 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '€'+v } } } }
+});
+
+// CLV share
+new Chart(document.getElementById('chartCLVshare'), {
+  type: 'doughnut',
+  data: {
+    labels: ['3 años (4.318 clientes)', '2 años (5.635 clientes)', '1 año (19.270 clientes)'],
+    datasets: [{ data: [47.9, 23.2, 28.9], backgroundColor: [COLORS.gold, COLORS.accent, COLORS.nofid], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+});
+
+// 4DX consumption
+new Chart(document.getElementById('chart4DX'), {
+  type: 'bar',
+  data: {
+    labels: ['2023', '2024', '2025'],
+    datasets: [
+      { label: 'Fidelizado', data: [18.4, 17.0, 23.2], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [39.2, 35.4, 47.4], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { max: 55, ticks: { callback: v => v+'%' } } } }
+});
+
+// Recargo %
+new Chart(document.getElementById('chartRecargo'), {
+  type: 'bar',
+  data: {
+    labels: ['PLANGOLD', 'FAMILIA', 'PLANETJOVE', 'PLANET', 'NO FID.'],
+    datasets: [
+      { label: '2023', data: [4.7, 8.6, 8.6, 9.3, 17.5], backgroundColor: 'rgba(255,107,53,0.7)', borderRadius: 3 },
+      { label: '2024', data: [2.9, 8.4, 8.0, 8.1, 17.3], backgroundColor: 'rgba(78,205,196,0.7)', borderRadius: 3 },
+      { label: '2025', data: [3.5, 12.8, 14.3, 18.6, 32.7], backgroundColor: 'rgba(255,209,102,0.7)', borderRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { ticks: { callback: v => v+'%' } } } }
+});
+
+// Anticipación
+new Chart(document.getElementById('chartAnticipacion'), {
+  type: 'bar',
+  data: {
+    labels: ['Mismo día', '1-3 días', '4+ días'],
+    datasets: [
+      { label: 'Fidelizado', data: [76.4, 16.5, 7.1], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [54.6, 28.6, 16.8], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { y: { ticks: { callback: v => v+'%' } } } }
+});
+
+// Group size
+new Chart(document.getElementById('chartGroupSize'), {
+  type: 'bar',
+  data: {
+    labels: ['FAMILIA', 'PLANETJOVE', 'PLANET', 'PLANGOLD', 'NO FID.'],
+    datasets: [{ label: 'Tickets/transacción', data: [2.83, 2.35, 2.26, 2.05, 2.48], backgroundColor: [COLORS.familia, COLORS.jove, COLORS.planet, COLORS.gold, COLORS.nofid], borderRadius: 6 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+});
+
+// Q1 tickets
+new Chart(document.getElementById('chartQ1tickets'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 2023', 'Q1 2024', 'Q1 2025', 'Q1 2026'],
+    datasets: [
+      { label: 'Fidelizado', data: [22357, 17048, 13072, 19522], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No Fidelizado', data: [30718, 20219, 19802, 33011], backgroundColor: COLORS.nofid, borderRadius: 4 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true } } }
+});
+
+// Q1 fid %
+new Chart(document.getElementById('chartQ1pct'), {
+  type: 'line',
+  data: {
+    labels: ['Q1 2023', 'Q1 2024', 'Q1 2025', 'Q1 2026'],
+    datasets: [{
+      label: '% tickets fidelizados',
+      data: [42.1, 45.7, 39.8, 37.2],
+      borderColor: COLORS.accent,
+      backgroundColor: 'rgba(255,107,53,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 6,
+      pointBackgroundColor: COLORS.accent
+    }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 30, max: 50, ticks: { callback: v => v+'%' } } } }
+});
+
+// ====== SECTION 10: CONVERSION CHARTS ======
+
+// Before vs After conversion
+new Chart(document.getElementById('chartConvBA'), {
+  type: 'bar',
+  data: {
+    labels: ['Visitas/año', 'Tickets/año', 'Revenue/año (€/10)', '% 1 visita', '% 3+ visitas'],
+    datasets: [
+      { label: 'ANTES (no fidelizado)', data: [1.80, 4.7, 4.14, 64.4, 15.7], backgroundColor: COLORS.nofid, borderRadius: 4 },
+      { label: 'DESPUÉS (fidelizado)', data: [2.49, 6.7, 5.86, 42.9, 33.0], backgroundColor: COLORS.positive, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { position: 'bottom' } },
+    scales: { x: { beginAtZero: true } }
+  }
+});
+
+// Triple comparison: Convertido vs No-convertido vs Ya fidelizado
+new Chart(document.getElementById('chartConvTriple'), {
+  type: 'bar',
+  data: {
+    labels: ['Visitas/año', 'Tickets/año', 'Revenue (€/10)', '% 3+ visitas'],
+    datasets: [
+      { label: 'Convertido reciente', data: [2.49, 6.7, 5.86, 33.0], backgroundColor: COLORS.accent, borderRadius: 4 },
+      { label: 'No convertido (control)', data: [1.68, 4.3, 4.0, 14.4], backgroundColor: COLORS.nofid, borderRadius: 4 },
+      { label: 'Ya fidelizado veterano', data: [3.43, 8.5, 6.45, 40.7], backgroundColor: COLORS.planet, borderRadius: 4 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { position: 'bottom' } },
+    scales: { x: { beginAtZero: true } }
+  }
+});
+
+// Plan distribution of converters
+new Chart(document.getElementById('chartConvPlan'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PLANET (47%)', 'FAMILIA (37%)', 'PLANETJOVE (15%)', 'PLANGOLD (2%)'],
+    datasets: [{ data: [47, 37, 15, 2], backgroundColor: [COLORS.planet, COLORS.familia, COLORS.jove, COLORS.gold], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+});
+
+// Month of conversion
+new Chart(document.getElementById('chartConvMonth'), {
+  type: 'bar',
+  data: {
+    labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    datasets: [
+      { label: '2023→2024', data: [96,66,120,53,60,99,93,98,56,55,68,68], backgroundColor: 'rgba(255,107,53,0.6)', borderRadius: 3 },
+      { label: '2024→2025', data: [70,70,50,85,77,99,141,98,163,86,169,292], backgroundColor: 'rgba(78,205,196,0.6)', borderRadius: 3 }
+    ]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Converter retention (what happens to the 932)
+new Chart(document.getElementById('chartConvRetention'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Siguen fidelizados (33,9%)', 'Vuelven como no-fid (17,8%)', 'Desaparecen (48,3%)'],
+    datasets: [{ data: [33.9, 17.8, 48.3], backgroundColor: [COLORS.positive, COLORS.accent2, COLORS.negative], borderWidth: 0 }]
+  },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '55%' }
+});
+
+// Converter vs original retention
+new Chart(document.getElementById('chartConvVsOrig'), {
+  type: 'bar',
+  data: {
+    labels: ['Convertidos recientes', 'Fidelizados originales'],
+    datasets: [{
+      label: 'Retención al año siguiente',
+      data: [33.9, 46.1],
+      backgroundColor: [COLORS.accent, COLORS.planet],
+      borderRadius: 8,
+      barThickness: 80
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.parsed.y + '%' } }
+    },
+    scales: { y: { max: 55, ticks: { callback: v => v+'%' } } }
+  }
+});
+
+// ====== SECTION 11: MOVIE CHARTS ======
+
+function movieBarChart(canvasId, labels, fidPct, nofidPct) {
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Fidelizado', data: fidPct, backgroundColor: COLORS.accent, borderRadius: 3 },
+        { label: 'No Fidelizado', data: nofidPct, backgroundColor: COLORS.nofid, borderRadius: 3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.x + '%' } } },
+      scales: { x: { stacked: true, max: 100, ticks: { callback: v => v+'%' } }, y: { stacked: true } }
+    }
+  });
+}
+
+// 2023 top fid %
+movieBarChart('chartMovFid2023',
+  ['La niña de la comunión','Llaman a la puerta','Op. Fortune','Mari(dos)','García y García 2','M3GAN','¡Shazam!','65','El exorcista del papa','Scream VI'],
+  [76.6,75.4,69.4,69.0,68.8,68.4,66.5,62.4,62.3,62.1],
+  [23.4,24.6,30.6,31.0,31.2,31.6,33.5,37.6,37.7,37.9]
+);
+
+movieBarChart('chartMovFid2024',
+  ['Beekeeper','Godzilla y Kong','Cazafantasmas','La 1ª profecía','La piscina','Fam. Benetón','Argylle','Madame Web','La trampa','El especialista'],
+  [66.2,64.5,62.1,61.8,61.3,60.8,60.3,60.3,58.6,57.2],
+  [33.8,35.5,37.9,38.2,38.7,39.2,39.7,39.7,41.4,42.8]
+);
+
+movieBarChart('chartMovFid2025',
+  ['Ballerina','Amateur','El contable 2','Bridget Jones','Ahora me ves 3','A Working Man','Karate Kid','The Monkey','Heretic','Predator: Badlands'],
+  [62.5,61.1,60.9,58.2,57.7,57.1,56.9,56.1,56.0,55.8],
+  [37.5,38.9,39.1,41.8,42.3,42.9,43.1,43.9,44.0,44.2]
+);
+
+movieBarChart('chartMovFid2026',
+  ['Greenland 2','Bob Esponja','Abuela Tremenda','28 años después','Goat','Ruta de escape','El Médico 2','Marty Supreme','Proyecto Salvación','Hamnet'],
+  [72.7,57.8,57.5,57.0,56.9,56.9,53.8,52.1,50.7,49.7],
+  [27.3,42.2,42.5,43.0,43.1,43.1,46.2,47.9,49.3,50.3]
+);
+
+// Conversion movies
+function convBarChart(canvasId, labels, values, total) {
+  new Chart(document.getElementById(canvasId), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Nuevos fidelizados',
+        data: values,
+        backgroundColor: values.map((v,i) => {
+          const opacity = 0.4 + (0.6 * (1 - i/values.length));
+          return `rgba(255,107,53,${opacity})`;
+        }),
+        borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.parsed.x + ' clientes (' + (ctx.parsed.x/total*100).toFixed(1) + '%)' } }
+      },
+      scales: { x: { beginAtZero: true } }
+    }
+  });
+}
+
+convBarChart('chartMovConv2023',
+  ['Avatar 4DX 3D','Super Mario Bros','Barbie','Avatar (estándar)','Super Mario 4DX','Ant-Man Quantumanía','El gato con botas','Avatar 3D','Guardianes Galaxia 3','Fast & Furious X'],
+  [1308,856,759,499,441,418,411,402,377,358], 16417
+);
+
+convBarChart('chartMovConv2024',
+  ['Del revés 2 (Inside Out 2)','Deadpool y Lobezno','Gru 4','Twisters 4DX','Vaiana 2','Gladiator II','Deadpool 4DX 3D','Romper el círculo','Kung Fu Panda 4','Dune: Parte Dos'],
+  [484,219,209,164,156,141,138,123,118,101], 6076
+);
+
+convBarChart('chartMovConv2025',
+  ['Avatar F.y C. 4DX','Jurassic W. 4DX','Dragón 4DX','Lilo y Stitch','Zootrópolis 2','Polar Express 4DX','Jurassic World','Expediente Warren','Minecraft','Cómo entrenar dragón'],
+  [562,334,214,206,203,192,170,157,136,136], 6730
+);
+
+convBarChart('chartMovConv2026',
+  ['Avatar F.y C. 4DX','La asistenta','Torrente Presidente','Zootrópolis 2','Avatar (estándar)','Avatar VOSE 4DX','Cumbres borrascosas','Hoppers','Avatar 3D','Aida Y Vuelta'],
+  [518,275,200,91,89,78,69,64,63,52], 2051
+);
 </script>
+
 </body>
 </html>
